@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "45bkxd922JQ=",
+  "dgSpecHash": "8Gr0d/K7C/c=",
   "success": true,
-  "projectFilePath": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0\\ACG AUDIT 2.0.csproj",
+  "projectFilePath": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\Modelos\\ACG AUDIT 2.0\\ACG AUDIT 2.0.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
     "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.configuration.configurationmanager\\8.0.0\\system.configuration.configurationmanager.8.0.0.nupkg.sha512",
