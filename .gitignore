@@ -407,6 +407,7 @@ patched-src
 # .NET Core build folders
 bin/
 obj/
+/obj/
 
 # Common node modules locations
 /node_modules
