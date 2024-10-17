@@ -1,0 +1,7 @@
+[*.cs]
+
+# CA1416: Validar a compatibilidade da plataforma
+dotnet_diagnostic.CA1416.severity = silent
+
+# SYSLIB0021: O tipo ou membro é obsoleto
+dotnet_diagnostic.SYSLIB0021.severity = silent

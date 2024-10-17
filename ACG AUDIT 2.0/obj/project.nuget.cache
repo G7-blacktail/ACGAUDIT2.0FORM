@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "45bkxd922JQ=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0\\ACG AUDIT 2.0.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
+    "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.configuration.configurationmanager\\8.0.0\\system.configuration.configurationmanager.8.0.0.nupkg.sha512",
+    "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.diagnostics.eventlog\\8.0.0\\system.diagnostics.eventlog.8.0.0.nupkg.sha512",
+    "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.diagnostics.performancecounter\\8.0.0\\system.diagnostics.performancecounter.8.0.0.nupkg.sha512",
+    "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512",
+    "C:\\Users\\gustavo.fernandes\\.nuget\\packages\\system.security.cryptography.protecteddata\\8.0.0\\system.security.cryptography.protecteddata.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

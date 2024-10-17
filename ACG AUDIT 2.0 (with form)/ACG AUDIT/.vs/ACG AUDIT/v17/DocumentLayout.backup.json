@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|c:\\users\\gustavo.fernandes\\documents\\lidersis\\acg audit 2.0 (with form)\\acg audit\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|c:\\users\\gustavo.fernandes\\documents\\lidersis\\acg audit 2.0 (with form)\\acg audit\\app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|solutionrelative:app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|ACG AUDIT||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E62E06A-F99D-47C6-9F42-17A6DBE123C3}|ACG AUDIT.csproj|c:\\users\\gustavo.fernandes\\documents\\lidersis\\acg audit 2.0 (with form)\\acg audit\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|cc4014f5-b18d-439c-9352-f99d984cca85"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "app.manifest",
+              "DocumentMoniker": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\app.manifest",
+              "RelativeDocumentMoniker": "app.manifest",
+              "ToolTip": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\app.manifest",
+              "RelativeToolTip": "app.manifest",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001203|",
+              "WhenOpened": "2024-10-17T14:13:37.96Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ACG AUDIT",
+              "DocumentMoniker": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\ACG AUDIT.csproj",
+              "RelativeDocumentMoniker": "ACG AUDIT.csproj",
+              "ToolTip": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\ACG AUDIT.csproj",
+              "RelativeToolTip": "ACG AUDIT.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-10-08T14:29:26.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAiwA4AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-08T14:06:54.664Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\ACG AUDIT 2.0 (with form)\\ACG AUDIT\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-08T14:04:22.658Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
