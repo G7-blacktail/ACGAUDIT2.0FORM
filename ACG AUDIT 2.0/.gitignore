@@ -7,6 +7,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+
+# Pastas de build do .NET Core
+bin/
+obj/
+
 # User-specific files
 *.rsuser
 *.suo
@@ -426,6 +431,7 @@ obj/
 *.pif
 *.vb
 *.wsf
+*.dll
 
 ### VisualStudioCode ###
 !.vscode/*.code-snippets
