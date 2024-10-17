@@ -31,12 +31,13 @@ namespace RegistryPolReader
 
 
             SystemInformation systemInfo = new SystemInformation();
-            Console.WriteLine("Informações do sistema:");
+            Console.WriteLine("\nInformações do sistema:");
             Console.WriteLine($"Sistema operacional: {systemInfo.GetOperatingSystemInfo()}");
             Console.WriteLine($"Processador: {systemInfo.GetProcessorInfo()}");
             Console.WriteLine($"Memória: {systemInfo.GetMemoryInfo()}");
             Console.WriteLine($"Armazenamento: {systemInfo.GetStorageInfo()}");
             Console.WriteLine($"Rede: {systemInfo.GetNetworkInfo()}");
+            Console.WriteLine();
 
             Console.ReadLine(); // Stop console
         }
