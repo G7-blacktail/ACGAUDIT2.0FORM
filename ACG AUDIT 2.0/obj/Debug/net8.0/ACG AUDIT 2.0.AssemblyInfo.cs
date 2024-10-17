@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ACG AUDIT 2.0")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf2aa17917a08c8fecbeec731e00e9d155c1ca76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f60ccef9615cadd8f15626f0543cdd844985ce4c")]
 [assembly: System.Reflection.AssemblyProductAttribute("ACG AUDIT 2.0")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ACG AUDIT 2.0")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
