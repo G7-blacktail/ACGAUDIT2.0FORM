@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/csharp,dotnetcore
-# Edit at https://www.toptal.com/developers/gitignore?templates=csharp,dotnetcore
+# Created by https://www.toptal.com/developers/gitignore/api/dotfilessh,visualstudiocode,dotnetcore,csharp,dotsettings,executable
+# Edit at https://www.toptal.com/developers/gitignore?templates=dotfilessh,visualstudiocode,dotnetcore,csharp,dotsettings,executable
 
 ### Csharp ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -101,9 +101,6 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-*.dll
-*.exe
-*.AssemblyInfoInputs.cache
 
 # Chutzpah Test files
 _Chutzpah*
@@ -402,6 +399,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+### DotfilesSh ###
+local-patch
+patched-src
+
 ### DotnetCore ###
 # .NET Core build folders
 bin/
@@ -411,4 +412,32 @@ obj/
 /node_modules
 /wwwroot/node_modules
 
-# End of https://www.toptal.com/developers/gitignore/api/csharp,dotnetcore
+### DotSettings ###
+*.DotSettings
+
+### Executable ###
+*.app
+*.bat
+*.cgi
+*.com
+*.exe
+*.gadget
+*.jar
+*.pif
+*.vb
+*.wsf
+
+### VisualStudioCode ###
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# End of https://www.toptal.com/developers/gitignore/api/dotfilessh,visualstudiocode,dotnetcore,csharp,dotsettings,executable
