@@ -1,8 +1,7 @@
 using System;
 using System.Management;
 
-namespace getter;
-
+namespace ACG_AUDIT_2._0.getter;
 internal class BitLockerInfo
 {
 
@@ -18,7 +17,9 @@ internal class BitLockerInfo
             if (!string.IsNullOrEmpty(driveLetter))
             {
                 string bitLockerStatus = GetBitLockerStatus(driveLetter);
-                Console.WriteLine($"BitLocker status for {driveLetter}: {bitLockerStatus}");
+                Console.WriteLine("---------------------------------- BitLocker -----------------------------------------------------------");
+                Console.WriteLine($"BitLocker status for {driveLetter}/ {bitLockerStatus}");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
             }
         }
     }

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace RegistryPolReader
+namespace ACG_AUDIT_2._0.getter.RegistryPolReader
 {
     internal class PolicyExtractor
     {
@@ -58,8 +58,8 @@ namespace RegistryPolReader
             }
 
             // Imprimir os valores extraídos
-            Console.WriteLine("\nConfiguração do Usuário\n-> Modelos administrativos\n-> Painel de Controle\n-> Personalização\n");
-            Console.WriteLine("------------------------------Configurações de suspensão de tela--------------------------------------");
+            // Console.WriteLine("\nConfiguração do Usuário\n-> Modelos administrativos\n-> Painel de Controle\n-> Personalização\n");
+            Console.WriteLine("------------------------------ Configurações de suspensão de tela --------------------------------------");
             Console.WriteLine($"Habilitar a proteção de tela: {GetBooleanValue(screenSaveActive)}");
             Console.WriteLine($"Proteger com senha a proteção de tela: {GetBooleanValue(screenSaverIsSecure)}");
             Console.WriteLine($"Tempo limite de Proteção de tela: {GetTimeOutValue(screenSaveTimeOut)}");

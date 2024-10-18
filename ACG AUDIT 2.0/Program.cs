@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using getter;
+using ACG_AUDIT_2._0.getter;
+using ACG_AUDIT_2._0.getter.RegistryPolReader;
 
 namespace RegistryPolReader
 {
@@ -12,7 +13,7 @@ namespace RegistryPolReader
             GetDeviceId.GetUUID();
             Console.WriteLine();
 
-
+            Console.WriteLine("------------------------------------------ Informações do sistema -------------------------------------------------");
             SystemInformation systemInfo = new SystemInformation();
             Console.WriteLine("Informações do sistema:");
             Console.WriteLine($"Nome do host: {SystemInformation.GetHostName()}");
@@ -36,6 +37,7 @@ namespace RegistryPolReader
             Console.WriteLine($"Hotfixes: {SystemInformation.GetHotfixes()}");
             Console.WriteLine($"Rede: {SystemInformation.GetNetworkInfo()}");
             Console.WriteLine();
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
 
              SoftwareCollector.CollectAndDisplayInstalledSoftwares();
              
@@ -43,7 +45,7 @@ namespace RegistryPolReader
 
              // Caminho relativo do arquivo Registry.pol
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol");
-            Console.WriteLine($"\nArquivo Pesquisado\nFile path: {filePath}");
+            // Console.WriteLine($"\nArquivo Pesquisado\nFile path: {filePath}");
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("O arquivo Registry.pol não foi encontrado.");
@@ -54,6 +56,7 @@ namespace RegistryPolReader
             extractor.ExtractPolicyValues(filePath);
 
             // Verificar o status do BitLocker para todas as unidades
+            Console.WriteLine();
             BitLockerInfo.CheckBitLockerStatusForAllDisks();
 
             // Coletar e exibir informações sobre softwares instalados

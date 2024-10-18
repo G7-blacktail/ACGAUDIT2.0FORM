@@ -2,7 +2,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 
-namespace RegistryPolReader
+namespace ACG_AUDIT_2._0.getter
 {
     internal class SoftwareCollector
     {
@@ -34,12 +34,14 @@ namespace RegistryPolReader
             // Fecha a chave do Registro do Windows
             key.Close();
             Console.WriteLine();
+            Console.WriteLine("--------------------------------------- Softwares Instalados ------------------------------------------------------");
             // Exibe as informações sobre os softwares instalados
             foreach (Software software in softwares)
             {
                 Console.WriteLine("Nome: " + software.Nome);
                 Console.WriteLine("Versão: " + software.Versao);
             }
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
         }
     }
 
