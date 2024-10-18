@@ -2,7 +2,8 @@ using System;
 using System.Management;
 
 namespace getter;
-class GetDeviceId
+
+internal class GetDeviceId
 {
     public static void GetUUID()
     {

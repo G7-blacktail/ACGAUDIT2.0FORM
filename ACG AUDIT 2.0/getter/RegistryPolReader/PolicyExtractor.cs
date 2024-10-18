@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RegistryPolReader
 {
-    class PolicyExtractor
+    internal class PolicyExtractor
     {
         public void ExtractPolicyValues(string filePath)
         {

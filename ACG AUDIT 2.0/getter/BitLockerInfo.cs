@@ -3,7 +3,7 @@ using System.Management;
 
 namespace getter;
 
-public class BitLockerInfo
+internal class BitLockerInfo
 {
 
         public static void CheckBitLockerStatusForAllDisks()
