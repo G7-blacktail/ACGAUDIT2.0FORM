@@ -82,6 +82,7 @@ namespace RegistryPolReader
             string timeInfo = TimeInfo.GetTimeInfo();
             Console.WriteLine(timeInfo);
 
+            Console.WriteLine("Digite qualquer tecla para finalizar o programa");
             Console.ReadLine(); // Stop console
         }
     }
