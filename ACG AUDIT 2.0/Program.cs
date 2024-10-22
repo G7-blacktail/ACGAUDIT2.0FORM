@@ -62,6 +62,11 @@ namespace RegistryPolReader
             GrupoAdministradores grupoAdministradores = new GrupoAdministradores();
             grupoAdministradores.ExibirMembrosGrupos();
 
+            // Criar uma instância de AuditPolicy e exibir as políticas
+            string auditFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "audit_policies.inf");
+            AuditPolicy auditPolicy = new AuditPolicy(auditFilePath);
+            auditPolicy.DisplayPolicy();
+
             Console.ReadLine(); // Stop console
         }
     }

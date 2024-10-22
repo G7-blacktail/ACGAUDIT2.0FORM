@@ -1,0 +1,145 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+
+namespace ACG_AUDIT_2._0.getter
+{
+    public class AuditPolicy
+    {
+        public Dictionary<string, string> PolicyValues { get; private set; }
+        private string filePath;
+
+        public AuditPolicy(string filePath)
+        {
+            this.filePath = filePath;
+            PolicyValues = new Dictionary<string, string>();
+            UpdatePolicyFile();
+            LoadPolicy();
+        }
+
+        private void UpdatePolicyFile()
+        {
+            // Verifica se o arquivo existe e executa o secedit para criar/atualizar
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("Arquivo audit_policies.inf não encontrado. Criando/Atualizando o arquivo...");
+                ExecuteSecedit();
+            }
+            else
+            {
+                Console.WriteLine("Arquivo audit_policies.inf encontrado. Atualizando o arquivo...");
+                ExecuteSecedit();
+            }
+        }
+
+        private void ExecuteSecedit()
+        {
+            // Comando para exportar as políticas de auditoria
+            string command = $"secedit /export /areas SECURITYPOLICY /cfg \"{filePath}\" /log \"{filePath}.log\"";
+            ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(processInfo)!)
+            {
+                process.WaitForExit();
+                string output = process.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
+            }
+        }
+
+        private void LoadPolicy()
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("O arquivo audit_policies.inf não foi encontrado.");
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(filePath);
+            string currentSection = null!;
+
+            foreach (var line in lines)
+            {
+                // Ignorar linhas vazias e comentários
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
+                    continue;
+
+                // Verificar se a linha é uma seção
+                if (line.StartsWith('[') && line.EndsWith(']'))
+                {
+                    currentSection = line.Trim('[', ']');
+                }
+                else if (currentSection != null)
+                {
+                    var keyValue = line.Split(new[] { '=' }, 2);
+                    if (keyValue.Length == 2)
+                    {
+                        PolicyValues[keyValue[0].Trim()] = keyValue[1].Trim();
+                    }
+                }
+            }
+        }
+
+        public void DisplayPolicy()
+        {
+            Console.WriteLine("\nPolíticas de Auditoria:");
+
+            // Mapeamento das chaves para nomes amigáveis
+            var displayNames = new Dictionary<string, string>
+            {
+                { "MaximumPasswordAge", "Tempo de vida máximo da senha" },
+                { "MinimumPasswordLength", "Comprimento mínimo da senha" },
+                { "PasswordComplexity", "A senha deve satisfazer a requisitos de complexidade" },
+                { "PasswordHistorySize", "Aplicar histórico de senhas" },
+                { "LockoutBadCount", "Limite de bloqueio de conta" },
+                { "ResetLockoutCount", "Zerar contador de bloqueios de conta após" },
+                { "LockoutDuration", "Duração do bloqueio de conta" }
+            };
+
+            // Exibir as políticas de senha
+            foreach (var kvp in displayNames)
+            {
+                if (PolicyValues.TryGetValue(kvp.Key, out string value))
+                {
+                    // Para PasswordComplexity, exibir Habilitado ou Desabilitado
+                    if (kvp.Key == "PasswordComplexity")
+                    {
+                        Console.WriteLine($"{kvp.Value}: {(value == "1" ? "Habilitado" : "Desabilitado")}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{kvp.Value}: {value}");
+                    }
+                }
+            }
+
+            // Exibir as políticas de auditoria de eventos
+            Console.WriteLine("\n[Event Audit]");
+            var eventAuditKeys = new[]
+            {
+                "AuditSystemEvents",
+                "AuditLogonEvents",
+                "AuditObjectAccess",
+                "AuditPrivilegeUse",
+                "AuditPolicyChange",
+                "AuditAccountManage",
+                "AuditProcessTracking",
+                "AuditDSAccess",
+                "AuditAccountLogon"
+            };
+
+            foreach (var key in eventAuditKeys)
+            {
+                if (PolicyValues.TryGetValue(key, out string value))
+                {
+                    Console.WriteLine($"{key}: {value}");
+                }
+            }
+        }
+    }
+}
