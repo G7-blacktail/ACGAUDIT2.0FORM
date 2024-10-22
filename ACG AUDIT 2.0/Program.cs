@@ -59,7 +59,8 @@ namespace RegistryPolReader
             Console.WriteLine();
             BitLockerInfo.CheckBitLockerStatusForAllDisks();
 
-            // Coletar e exibir informações sobre softwares instalados
+            GrupoAdministradores grupoAdministradores = new GrupoAdministradores();
+            grupoAdministradores.ExibirMembrosGrupos();
 
             Console.ReadLine(); // Stop console
         }
