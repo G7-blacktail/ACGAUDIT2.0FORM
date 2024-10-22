@@ -8,7 +8,7 @@ namespace ACG_AUDIT_2._0.getter
     public class AuditPolicy
     {
         public Dictionary<string, string> PolicyValues { get; private set; }
-        private string filePath;
+        private readonly string filePath;
 
         public AuditPolicy(string filePath)
         {
@@ -76,7 +76,7 @@ namespace ACG_AUDIT_2._0.getter
                 }
                 else if (currentSection != null)
                 {
-                    var keyValue = line.Split(new[] { '=' }, 2);
+                    var keyValue = line.Split(['='], 2);
                     if (keyValue.Length == 2)
                     {
                         PolicyValues[keyValue[0].Trim()] = keyValue[1].Trim();
@@ -104,7 +104,7 @@ namespace ACG_AUDIT_2._0.getter
             // Exibir as políticas de senha
             foreach (var kvp in displayNames)
             {
-#pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
+                #pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
                 if (PolicyValues.TryGetValue(kvp.Key, out string value))
                 {
                     // Para PasswordComplexity, exibir Habilitado ou Desabilitado
@@ -117,7 +117,7 @@ namespace ACG_AUDIT_2._0.getter
                         Console.WriteLine($"{kvp.Value}: {value}");
                     }
                 }
-#pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
+#pragma         warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
             }
 
             // Exibir as políticas de auditoria de eventos

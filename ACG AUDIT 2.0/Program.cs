@@ -67,6 +67,21 @@ namespace RegistryPolReader
             AuditPolicy auditPolicy = new AuditPolicy(auditFilePath);
             auditPolicy.DisplayPolicy();
 
+            // Exibir informações do firewall
+            FirewallInfo.DisplayFirewallInfo();
+
+            // Chama o método para coletar informações sobre antivírus
+            string antivirusInfo = AntivirusInfo.GetAntivirusInfo();
+            Console.WriteLine(antivirusInfo);
+
+            // Chama o método para coletar informações sobre acesso remoto
+            string remoteAccessInfo = RemoteAccessInfo.GetRemoteAccessInfo();
+            Console.WriteLine(remoteAccessInfo);
+
+            // Chama o método para coletar informações sobre o relógio
+            string timeInfo = TimeInfo.GetTimeInfo();
+            Console.WriteLine(timeInfo);
+
             Console.ReadLine(); // Stop console
         }
     }
