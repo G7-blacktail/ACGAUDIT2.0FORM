@@ -85,7 +85,7 @@ namespace ACG_AUDIT_2._0.getter
             }
         }
 
-        public void DisplayPolicy()
+        public void DisplayPolicy() 
         {
             Console.WriteLine("\nPolíticas de Auditoria:");
 
@@ -104,6 +104,7 @@ namespace ACG_AUDIT_2._0.getter
             // Exibir as políticas de senha
             foreach (var kvp in displayNames)
             {
+#pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
                 if (PolicyValues.TryGetValue(kvp.Key, out string value))
                 {
                     // Para PasswordComplexity, exibir Habilitado ou Desabilitado
@@ -116,29 +117,46 @@ namespace ACG_AUDIT_2._0.getter
                         Console.WriteLine($"{kvp.Value}: {value}");
                     }
                 }
+#pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
             }
 
             // Exibir as políticas de auditoria de eventos
             Console.WriteLine("\n[Event Audit]");
-            var eventAuditKeys = new[]
+            
+            // Mapeamento dos eventos de auditoria
+            var eventDisplayNames = new Dictionary<string, string>
             {
-                "AuditSystemEvents",
-                "AuditLogonEvents",
-                "AuditObjectAccess",
-                "AuditPrivilegeUse",
-                "AuditPolicyChange",
-                "AuditAccountManage",
-                "AuditProcessTracking",
-                "AuditDSAccess",
-                "AuditAccountLogon"
+                { "AuditLogonEvents", "Auditoria de eventos de logon" },
+                { "AuditSystemEvents", "Auditoria de eventos de sistema" },
+                { "AuditObjectAccess", "Auditoria de acesso a objetos" },
+                { "AuditPrivilegeUse", "Auditoria de uso de privilégios" },
+                { "AuditPolicyChange", "Auditoria de alteração de políticas" },
+                { "AuditAccountManage", "Auditoria de gerenciamento de conta" },
+                { "AuditProcessTracking", "Auditoria de acompanhamento de processos" },
+                { "AuditDSAccess", "Auditoria de acesso ao serviço de diretório" },
+                { "AuditAccountLogon", "Auditoria de eventos de logon de conta" }
             };
 
-            foreach (var key in eventAuditKeys)
+            // Mapeamento dos resultados
+            var resultMapping = new Dictionary<string, string>
             {
-                if (PolicyValues.TryGetValue(key, out string value))
+                { "0", "Sem auditoria" },
+                { "1", "Exito" },
+                { "2", "Falha" },
+                { "3", "Exito, Falha" }
+            };
+
+            // Exibir os eventos de auditoria
+            foreach (var kvp in eventDisplayNames)
+            {
+#pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
+                if (PolicyValues.TryGetValue(kvp.Key, out string value))
                 {
-                    Console.WriteLine($"{key}: {value}");
+                    // Mapeia o valor para a descrição correspondente
+                    string resultDescription = resultMapping.ContainsKey(value) ? resultMapping[value] : value;
+                    Console.WriteLine($"{kvp.Value}: {resultDescription}");
                 }
+#pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
             }
         }
     }
