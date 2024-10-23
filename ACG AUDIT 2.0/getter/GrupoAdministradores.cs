@@ -25,13 +25,9 @@ public class GrupoAdministradores
             CreateNoWindow = true
         };
 
-        using (Process process = Process.Start(startInfo)!)
-        {
-            using (System.IO.StreamReader reader = process!.StandardOutput)
-            {
-                string result = reader.ReadToEnd();
-                Console.WriteLine(result);
-            }
-        }
+        using Process process = Process.Start(startInfo)!;
+        using StreamReader reader = process!.StandardOutput;
+        string result = reader.ReadToEnd();
+        Console.WriteLine(result);
     }
 }

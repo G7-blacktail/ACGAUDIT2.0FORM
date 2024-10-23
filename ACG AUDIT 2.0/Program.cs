@@ -59,8 +59,11 @@ namespace RegistryPolReader
             Console.WriteLine();
             BitLockerInfo.CheckBitLockerStatusForAllDisks();
 
-            GrupoAdministradores grupoAdministradores = new GrupoAdministradores();
+            GrupoAdministradores grupoAdministradores = new();
             grupoAdministradores.ExibirMembrosGrupos();
+
+            GrupoUsuarios grupoUsuarios = new();
+            grupoUsuarios.ExibirUsuariosEGrupos();
 
             // Criar uma instância de AuditPolicy e exibir as políticas
             string auditFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "audit_policies.inf");
