@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Win32;
 
-namespace ACG_AUDIT_2._0.getter
+namespace ACG_AUDIT_2._0.RegistryPolReader
 {
     public class RemoteAccessInfo
     {

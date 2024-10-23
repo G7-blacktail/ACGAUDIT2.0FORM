@@ -1,9 +1,9 @@
 using System;
 using System.Management;
 
-namespace ACG_AUDIT_2._0.getter;
+namespace ACG_AUDIT_2._0.RegistryPolReader;
 
-internal class GetDeviceId
+internal class GetDeviceIdInfo
 {
     public static void GetUUID()
     {

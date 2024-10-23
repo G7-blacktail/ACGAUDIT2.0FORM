@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
 
-namespace ACG_AUDIT_2._0.getter;
-public class GrupoAdministradores
+namespace ACG_AUDIT_2._0.RegistryPolReader;
+public class AdministradorGroupInfo
 {
     public void ExibirMembrosGrupos()
     {

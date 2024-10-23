@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace ACG_AUDIT_2._0.getter
-{
-    public class AuditPolicy
+namespace ACG_AUDIT_2._0.RegistryPolReader;
+    public class AuditPolicyInfo
     {
         public Dictionary<string, string> PolicyValues { get; private set; }
         private readonly string filePath;
 
-        public AuditPolicy(string filePath)
+        public AuditPolicyInfo(string filePath)
         {
             this.filePath = filePath;
             PolicyValues = new Dictionary<string, string>();
@@ -160,4 +159,3 @@ namespace ACG_AUDIT_2._0.getter
             }
         }
     }
-}

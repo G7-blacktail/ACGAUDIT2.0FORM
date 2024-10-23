@@ -2,9 +2,8 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace ACG_AUDIT_2._0.getter.RegistryPolReader
-{
-    internal class PolicyExtractor
+namespace ACG_AUDIT_2._0.RegistryPolReader;
+    internal class PolicyPasswordInfo
     {
         public void ExtractPolicyValues(string filePath)
         {
@@ -103,4 +102,3 @@ namespace ACG_AUDIT_2._0.getter.RegistryPolReader
             }
         }
     }
-}

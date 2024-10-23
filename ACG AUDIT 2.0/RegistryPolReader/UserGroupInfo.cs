@@ -2,9 +2,8 @@ using System;
 using System.Management;
 using System.Collections.Generic;
 
-namespace ACG_AUDIT_2._0.getter
-{
-    public class GrupoUsuarios
+namespace ACG_AUDIT_2._0.RegistryPolReader;
+    public class UserGroupInfo
     {
         public void ExibirUsuariosEGrupos()
         {
@@ -67,5 +66,4 @@ namespace ACG_AUDIT_2._0.getter
                 }
             }
         }
-    }
 }

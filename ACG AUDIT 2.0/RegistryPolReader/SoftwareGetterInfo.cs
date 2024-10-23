@@ -2,9 +2,9 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 
-namespace ACG_AUDIT_2._0.getter
-{
-    internal class SoftwareCollector
+namespace ACG_AUDIT_2._0.RegistryPolReader;
+
+    internal class SoftwareCollectorInfo
     {
         public static void CollectAndDisplayInstalledSoftwares()
         {
@@ -45,15 +45,14 @@ namespace ACG_AUDIT_2._0.getter
         }
     }
 
-    class Software
-    {
-        public string Nome { get; set; }
-        public string Versao { get; set; }
+class Software
+{
+    public string Nome { get; set; }
+    public string Versao { get; set; }
 
-        public Software(string nome, string versao)
-        {
-            Nome = nome;
-            Versao = versao;
-        }
+    public Software(string nome, string versao)
+    {
+        Nome = nome;
+        Versao = versao;
     }
 }

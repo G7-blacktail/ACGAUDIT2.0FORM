@@ -3,8 +3,8 @@ using System.Management;
 using System.Globalization;
 using System.DirectoryServices.ActiveDirectory;
 
-    namespace ACG_AUDIT_2._0.getter;
-    internal class SystemInformation
+    namespace ACG_AUDIT_2._0.RegistryPolReader;
+    internal class SystemInformationInfo
     {
     public static string GetHostName()
     {

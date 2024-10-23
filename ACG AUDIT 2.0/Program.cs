@@ -1,45 +1,42 @@
 ﻿using System;
 using System.IO;
-using ACG_AUDIT_2._0.getter;
-using ACG_AUDIT_2._0.getter.RegistryPolReader;
+namespace ACG_AUDIT_2._0.RegistryPolReader;
 
-namespace RegistryPolReader
-{
     class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("\nInformações coletadas\n");
-            GetDeviceId.GetUUID();
+            GetDeviceIdInfo.GetUUID();
             Console.WriteLine();
 
             Console.WriteLine("------------------------------------------ Informações do sistema -------------------------------------------------");
-            SystemInformation systemInfo = new SystemInformation();
+            SystemInformationInfo systemInfo = new();
             Console.WriteLine("Informações do sistema:");
-            Console.WriteLine($"Nome do host: {SystemInformation.GetHostName()}");
-            Console.WriteLine($"Sistema operacional: {SystemInformation.GetOperatingSystemInfo()}");
-            Console.WriteLine($"Fabricante do sistema: {SystemInformation.GetSystemManufacturer()}");
-            Console.WriteLine($"Modelo do sistema: {SystemInformation.GetSystemModel()}");
-            Console.WriteLine($"Tipo de sistema: {SystemInformation.GetSystemType()}");
-            Console.WriteLine($"Processador(es): {SystemInformation.GetProcessorInfo()}");
-            Console.WriteLine($"Versão do BIOS: {SystemInformation.GetBIOSVersion()}");
-            Console.WriteLine($"Pasta do Windows: {SystemInformation.GetWindowsFolder()}");
-            Console.WriteLine($"Pasta do sistema: {SystemInformation.GetSystemFolder()}");
-            Console.WriteLine($"Inicializar dispositivo: {SystemInformation.GetBootDevice()}");
-            Console.WriteLine($"Localidade do sistema: {SystemInformation.GetSystemLocale()}");
-            Console.WriteLine($"Localidade de entrada: {SystemInformation.GetInputLocale()}");
-            Console.WriteLine($"Fuso horário: {SystemInformation.GetTimeZone()}");
-            Console.WriteLine($"Memória física: {SystemInformation.GetMemoryInfo()}");
+            Console.WriteLine($"Nome do host: {SystemInformationInfo.GetHostName()}");
+            Console.WriteLine($"Sistema operacional: {SystemInformationInfo.GetOperatingSystemInfo()}");
+            Console.WriteLine($"Fabricante do sistema: {SystemInformationInfo.GetSystemManufacturer()}");
+            Console.WriteLine($"Modelo do sistema: {SystemInformationInfo.GetSystemModel()}");
+            Console.WriteLine($"Tipo de sistema: {SystemInformationInfo.GetSystemType()}");
+            Console.WriteLine($"Processador(es): {SystemInformationInfo.GetProcessorInfo()}");
+            Console.WriteLine($"Versão do BIOS: {SystemInformationInfo.GetBIOSVersion()}");
+            Console.WriteLine($"Pasta do Windows: {SystemInformationInfo.GetWindowsFolder()}");
+            Console.WriteLine($"Pasta do sistema: {SystemInformationInfo.GetSystemFolder()}");
+            Console.WriteLine($"Inicializar dispositivo: {SystemInformationInfo.GetBootDevice()}");
+            Console.WriteLine($"Localidade do sistema: {SystemInformationInfo.GetSystemLocale()}");
+            Console.WriteLine($"Localidade de entrada: {SystemInformationInfo.GetInputLocale()}");
+            Console.WriteLine($"Fuso horário: {SystemInformationInfo.GetTimeZone()}");
+            Console.WriteLine($"Memória física: {SystemInformationInfo.GetMemoryInfo()}");
             Console.WriteLine($"Memória Virtual: {systemInfo.GetVirtualMemoryInfo()}");
-            Console.WriteLine($"Local do arquivo de paginação: {SystemInformation.GetPageFileLocation()}");
-            Console.WriteLine($"Domínio: {SystemInformation.GetDomainName()}");
-            Console.WriteLine($"Servidor de Logon: {SystemInformation.GetLogonServer()}");
-            Console.WriteLine($"Hotfixes: {SystemInformation.GetHotfixes()}");
-            Console.WriteLine($"Rede: {SystemInformation.GetNetworkInfo()}");
+            Console.WriteLine($"Local do arquivo de paginação: {SystemInformationInfo.GetPageFileLocation()}");
+            Console.WriteLine($"Domínio: {SystemInformationInfo.GetDomainName()}");
+            Console.WriteLine($"Servidor de Logon: {SystemInformationInfo.GetLogonServer()}");
+            Console.WriteLine($"Hotfixes: {SystemInformationInfo.GetHotfixes()}");
+            Console.WriteLine($"Rede: {SystemInformationInfo.GetNetworkInfo()}");
             Console.WriteLine();
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
 
-             SoftwareCollector.CollectAndDisplayInstalledSoftwares();
+             SoftwareCollectorInfo.CollectAndDisplayInstalledSoftwares();
              
             // Criar uma instância de PolicyExtractor e executar a extração
 
@@ -52,22 +49,22 @@ namespace RegistryPolReader
                 return;
             }
 
-            PolicyExtractor extractor = new PolicyExtractor();
+            PolicyPasswordInfo extractor = new();
             extractor.ExtractPolicyValues(filePath);
 
             // Verificar o status do BitLocker para todas as unidades
             Console.WriteLine();
             BitLockerInfo.CheckBitLockerStatusForAllDisks();
 
-            GrupoAdministradores grupoAdministradores = new();
+            AdministradorGroupInfo grupoAdministradores = new();
             grupoAdministradores.ExibirMembrosGrupos();
 
-            GrupoUsuarios grupoUsuarios = new();
+            UserGroupInfo grupoUsuarios = new();
             grupoUsuarios.ExibirUsuariosEGrupos();
 
             // Criar uma instância de AuditPolicy e exibir as políticas
             string auditFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "audit_policies.inf");
-            AuditPolicy auditPolicy = new AuditPolicy(auditFilePath);
+            AuditPolicyInfo auditPolicy = new(auditFilePath);
             auditPolicy.DisplayPolicy();
 
             // Exibir informações do firewall
@@ -89,4 +86,3 @@ namespace RegistryPolReader
             Console.ReadLine(); // Stop console
         }
     }
-}
