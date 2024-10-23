@@ -31,20 +31,27 @@ internal class BitLockerInfo
         // Create a WMI query to get the BitLocker volume for the specified drive letter
         string wmiQuery = $"SELECT * FROM Win32_EncryptableVolume WHERE DriveLetter = '{driveLetter}'";
         ManagementObjectSearcher searcher = new ManagementObjectSearcher("\\\\.\\root\\cimv2\\Security\\MicrosoftVolumeEncryption", wmiQuery);
-
-        // Execute the query and get the results
-        ManagementObjectCollection results = searcher.Get();
-
-        // Check if the BitLocker volume is found
-        if (results.Count > 0)
+        try
         {
-            foreach (ManagementObject bitLockerVolume in results)
+            // Execute the query and get the results
+            ManagementObjectCollection results = searcher.Get();
+
+            // Check if the BitLocker volume is found
+            if (results.Count > 0)
             {
-                if ((uint)bitLockerVolume["ProtectionStatus"] == 1)
+                foreach (ManagementObject bitLockerVolume in results)
                 {
-                    bitLockerStatus = "Ativado";
+                    if ((uint)bitLockerVolume["ProtectionStatus"] == 1)
+                    {
+                        bitLockerStatus = "Ativado";
+                    }
                 }
             }
+        }
+        catch (ManagementException)
+        {
+            // Return a message indicating that elevated privileges are required
+            return "Não foi possível coletar por necessidade de privilégios elevados - Acesso Negado Pelo Sistema";
         }
 
         return bitLockerStatus;
