@@ -2,7 +2,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 
-namespace ACG_AUDIT_2._0.RegCollector;
+namespace ACG_AUDIT_2._0.Services.RegCollector;
 
     internal class SoftwareCollectorInfo
     {

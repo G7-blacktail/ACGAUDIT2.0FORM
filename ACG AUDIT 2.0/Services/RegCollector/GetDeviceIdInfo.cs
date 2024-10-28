@@ -1,7 +1,7 @@
 using System;
 using System.Management;
 
-namespace ACG_AUDIT_2._0.RegCollector;
+namespace ACG_AUDIT_2._0.Services.RegCollector;
 
 internal class GetDeviceIdInfo
 {

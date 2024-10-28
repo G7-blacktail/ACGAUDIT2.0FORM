@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
-using ACG_AUDIT_2._0.RegCollector;
+using ACG_AUDIT_2._0.Services.RegCollector;
+using ACG_AUDIT_2._0.Database;
+using ACG_AUDIT_2._0.Models.Entity;
 
 namespace ACG_AUDIT_2._0;
 
@@ -12,8 +14,12 @@ namespace ACG_AUDIT_2._0;
             GetDeviceIdInfo.GetUUID();
             Console.WriteLine();
 
+            SystemInformationEntity systemInfo = SystemInformationInfo.CollectSystemInformation();
+
+            DatabaseManager databaseManager = new DatabaseManager();
+            databaseManager.SaveSystemInformation(systemInfo);
+
             Console.WriteLine("------------------------------------------ Informações do sistema -------------------------------------------------");
-            SystemInformationInfo systemInfo = new();
             Console.WriteLine("Informações do sistema:");
             Console.WriteLine($"Nome do host: {SystemInformationInfo.GetHostName()}");
             Console.WriteLine($"Sistema operacional: {SystemInformationInfo.GetOperatingSystemInfo()}");
@@ -29,7 +35,7 @@ namespace ACG_AUDIT_2._0;
             Console.WriteLine($"Localidade de entrada: {SystemInformationInfo.GetInputLocale()}");
             Console.WriteLine($"Fuso horário: {SystemInformationInfo.GetTimeZone()}");
             Console.WriteLine($"Memória física: {SystemInformationInfo.GetMemoryInfo()}");
-            Console.WriteLine($"Memória Virtual: {systemInfo.GetVirtualMemoryInfo()}");
+            Console.WriteLine($"Memória Virtual: {SystemInformationInfo.GetVirtualMemoryInfo()}");
             Console.WriteLine($"Local do arquivo de paginação: {SystemInformationInfo.GetPageFileLocation()}");
             Console.WriteLine($"Domínio: {SystemInformationInfo.GetDomainName()}");
             Console.WriteLine($"Servidor de Logon: {SystemInformationInfo.GetLogonServer()}");

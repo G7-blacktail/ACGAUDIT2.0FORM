@@ -2,17 +2,62 @@ using System;
 using System.Management;
 using System.Globalization;
 using System.DirectoryServices.ActiveDirectory;
+using ACG_AUDIT_2._0.Models.Entity;
 
-    namespace ACG_AUDIT_2._0.RegCollector;
+    namespace ACG_AUDIT_2._0.Services.RegCollector;
     internal class SystemInformationInfo
     {
+        private static string query = "SELECT * FROM Win32_OperatingSystem";
+        private const string indisponivel = "Não disponível";
+
+        public static SystemInformationEntity CollectSystemInformation()
+        {
+            SystemInformationEntity systemInfo = new SystemInformationEntity
+            {
+                HostName = GetHostName(),
+                OperatingSystem = GetOperatingSystemInfo(),
+                Manufacturer = GetSystemManufacturer(),
+                Model = GetSystemModel(),
+                SystemType = GetSystemType(),
+                Processor = GetProcessorInfo(),
+                BIOSVersion = GetBIOSVersion(),
+                WindowsFolder = GetWindowsFolder(),
+                SystemFolder = GetSystemFolder(),
+                BootDevice = GetBootDevice(),
+                SystemLocale = GetSystemLocale(),
+                InputLocale = GetInputLocale(),
+                TimeZone = GetTimeZone(),
+                MemoryInfo = GetMemoryInfo(),
+                VirtualMemoryInfo = GetVirtualMemoryInfo(),
+                PageFileLocation = GetPageFileLocation(),
+                DomainName = GetDomainName(),
+                LogonServer = GetLogonServer(),
+                Hotfixes = GetHotfixes(),
+                NetworkInfo = GetNetworkInfo()
+            };
+
+            return systemInfo;
+        }
+
+    public static string GetVirtualMemoryInfo()
+    {
+        long totalVirtualMemory = GetVirtualMemorySize();
+        long availableVirtualMemory = GetAvailableVirtualMemory();
+        long usedVirtualMemory = GetUsedVirtualMemory();
+        return $"Total: {ConvertToGB(totalVirtualMemory)} GB, Disponível: {ConvertToGB(availableVirtualMemory)} GB, Em Uso: {ConvertToGB(usedVirtualMemory)} GB";
+    }
+
     public static string GetHostName()
     {
         return Environment.MachineName;
     }
+    // public static string GetHostName()
+    // {
+    //     return Environment.MachineName;
+    // }
 
-    private static string query = "SELECT * FROM Win32_OperatingSystem";
-    private const string indisponivel = "Não disponível";
+    // private static string query = "SELECT * FROM Win32_OperatingSystem";
+    // private const string indisponivel = "Não disponível";
 
     public static string GetOperatingSystemInfo()
     {
@@ -126,13 +171,13 @@ using System.DirectoryServices.ActiveDirectory;
         return $"Total: {ConvertToGB(totalMemory)} GB, Disponível: {ConvertToGB(availableMemory)} GB";
     }
 
-    public string GetVirtualMemoryInfo()
-    {
-        long totalVirtualMemory = GetVirtualMemorySize();
-        long availableVirtualMemory = GetAvailableVirtualMemory();
-        long usedVirtualMemory = GetUsedVirtualMemory();
-        return $"Total: {ConvertToGB(totalVirtualMemory)} GB, Disponível: {ConvertToGB(availableVirtualMemory)} GB, Em Uso: {ConvertToGB(usedVirtualMemory)} GB";
-    }
+    // public string GetVirtualMemoryInfo()
+    // {
+    //     long totalVirtualMemory = GetVirtualMemorySize();
+    //     long availableVirtualMemory = GetAvailableVirtualMemory();
+    //     long usedVirtualMemory = GetUsedVirtualMemory();
+    //     return $"Total: {ConvertToGB(totalVirtualMemory)} GB, Disponível: {ConvertToGB(availableVirtualMemory)} GB, Em Uso: {ConvertToGB(usedVirtualMemory)} GB";
+    // }
 
     public static string GetPageFileLocation()
     {

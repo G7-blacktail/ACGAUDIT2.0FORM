@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace ACG_AUDIT_2._0.RegCollector;
+namespace ACG_AUDIT_2._0.Services.RegCollector;
     internal class PolicyPasswordInfo
     {
         public void ExtractPolicyValues(string filePath)
