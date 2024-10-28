@@ -2,25 +2,25 @@ namespace ACG_AUDIT_2._0.Models.Entity
 {
     public class SystemInformationEntity
     {
-        public string HostName { get; set; }
-        public string OperatingSystem { get; set; }
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public string SystemType { get; set; }
-        public string Processor { get; set; }
-        public string BIOSVersion { get; set; }
-        public string WindowsFolder { get; set; }
-        public string SystemFolder { get; set; }
-        public string BootDevice { get; set; }
-        public string SystemLocale { get; set; }
-        public string InputLocale { get; set; }
-        public string TimeZone { get; set; }
-        public string MemoryInfo { get; set; }
-        public string VirtualMemoryInfo { get; set; }
-        public string PageFileLocation { get; set; }
-        public string DomainName { get; set; }
-        public string LogonServer { get; set; }
-        public string Hotfixes { get; set; }
-        public string NetworkInfo { get; set; }
+        public required string HostName { get; set; }
+        public required string OperatingSystem { get; set; }
+        public required string Manufacturer { get; set; }
+        public required string Model { get; set; }
+        public required string SystemType { get; set; }
+        public required string Processor { get; set; }
+        public required string BIOSVersion { get; set; }
+        public required string WindowsFolder { get; set; }
+        public required string SystemFolder { get; set; }
+        public required string BootDevice { get; set; }
+        public required string SystemLocale { get; set; }
+        public required string InputLocale { get; set; }
+        public required string TimeZone { get; set; }
+        public required string MemoryInfo { get; set; }
+        public required string VirtualMemoryInfo { get; set; }
+        public required string PageFileLocation { get; set; }
+        public required string DomainName { get; set; }
+        public required string LogonServer { get; set; }
+        public required string Hotfixes { get; set; }
+        public required string NetworkInfo { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace ACG_AUDIT_2._0.Database
 {
     public class DatabaseManager
     {
-        private string connectionString = "Server=localhost;Database=acg_audit_test;UserID=root;Password=root;Charset=utf8mb4;";
+        private readonly string connectionString = "Server=localhost;Database=acg_audit_test;UserID=root;Password=root;Charset=utf8mb4;";
 
         public void SaveSystemInformation(SystemInformationEntity systemInfo)
         {
