@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
-namespace ACG_AUDIT_2._0.RegistryPolReader;
+using ACG_AUDIT_2._0.RegCollector;
+
+namespace ACG_AUDIT_2._0;
 
     class Program
     {

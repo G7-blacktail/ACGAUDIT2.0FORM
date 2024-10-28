@@ -1,7 +1,7 @@
 using System;
 using System.Management;
 
-namespace ACG_AUDIT_2._0.RegistryPolReader;
+namespace ACG_AUDIT_2._0.RegCollector;
 internal class BitLockerInfo
 {
 

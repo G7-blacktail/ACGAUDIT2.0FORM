@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ACG_AUDIT_2._0.RegistryPolReader
+namespace ACG_AUDIT_2._0.RegCollector
 {
     public class FirewallInfo
     {

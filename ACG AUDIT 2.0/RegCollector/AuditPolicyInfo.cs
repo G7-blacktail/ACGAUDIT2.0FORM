@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace ACG_AUDIT_2._0.RegistryPolReader;
+namespace ACG_AUDIT_2._0.RegCollector;
     public class AuditPolicyInfo
     {
         public Dictionary<string, string> PolicyValues { get; private set; }

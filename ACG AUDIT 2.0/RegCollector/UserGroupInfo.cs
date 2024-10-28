@@ -2,7 +2,7 @@ using System;
 using System.Management;
 using System.Collections.Generic;
 
-namespace ACG_AUDIT_2._0.RegistryPolReader;
+namespace ACG_AUDIT_2._0.RegCollector;
     public class UserGroupInfo
     {
         public void ExibirUsuariosEGrupos()

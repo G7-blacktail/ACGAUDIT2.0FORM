@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace ACG_AUDIT_2._0.RegistryPolReader
+namespace ACG_AUDIT_2._0.RegCollector
 {
     public class TimeInfo
     {
