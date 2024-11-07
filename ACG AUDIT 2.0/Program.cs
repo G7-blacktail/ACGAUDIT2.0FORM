@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using ACG_AUDIT_2._0.Services.RegCollector;
-using ACG_AUDIT_2._0.Database;
-using ACG_AUDIT_2._0.Models.Entity;
 
 namespace ACG_AUDIT_2._0;
 
@@ -13,11 +11,6 @@ namespace ACG_AUDIT_2._0;
             Console.WriteLine("\nInformações coletadas\n");
             GetDeviceIdInfo.GetUUID();
             Console.WriteLine();
-
-            SystemInformationEntity systemInfo = SystemInformationInfo.CollectSystemInformation();
-
-            DatabaseManager databaseManager = new DatabaseManager();
-            databaseManager.SaveSystemInformation(systemInfo);
 
             Console.WriteLine("------------------------------------------ Informações do sistema -------------------------------------------------");
             Console.WriteLine("Informações do sistema:");
