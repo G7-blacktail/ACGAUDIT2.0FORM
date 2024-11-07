@@ -36,8 +36,10 @@ namespace ACG_AUDIT_2._0;
             Console.WriteLine($"Rede: {SystemInformationInfo.GetNetworkInfo()}");
             Console.WriteLine();
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
+            Console.Read();
 
              SoftwareCollectorInfo.CollectAndDisplayInstalledSoftwares();
+             Console.Read();
              
             // Criar uma instância de PolicyExtractor e executar a extração
 
@@ -47,40 +49,50 @@ namespace ACG_AUDIT_2._0;
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("O arquivo Registry.pol não foi encontrado.");
-                return;
+                Console.Read();
+            } else 
+            {
+                PolicyPasswordInfo extractor = new();
+                extractor.ExtractPolicyValues(filePath);
+                Console.Read();
             }
-
-            PolicyPasswordInfo extractor = new();
-            extractor.ExtractPolicyValues(filePath);
 
             // Verificar o status do BitLocker para todas as unidades
             Console.WriteLine();
             BitLockerInfo.CheckBitLockerStatusForAllDisks();
+            Console.Read();
 
             AdministradorGroupInfo grupoAdministradores = new();
             grupoAdministradores.ExibirMembrosGrupos();
+            Console.Read();
 
             UserGroupInfo grupoUsuarios = new();
             grupoUsuarios.ExibirUsuariosEGrupos();
+            Console.Read();
 
             // Criar uma instância de AuditPolicy e exibir as políticas
             string auditFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "audit_policies.inf");
             AuditPolicyInfo auditPolicy = new(auditFilePath);
+            Console.Read();
             auditPolicy.DisplayPolicy();
+            Console.Read();
 
             // Exibir informações do firewall
             FirewallInfo.DisplayFirewallInfo();
-
+            Console.Read();
             // Chama o método para coletar informações sobre antivírus
             string antivirusInfo = AntivirusInfo.GetAntivirusInfo();
+            Console.Read();
             Console.WriteLine(antivirusInfo);
 
             // Chama o método para coletar informações sobre acesso remoto
             string remoteAccessInfo = RemoteAccessInfo.GetRemoteAccessInfo();
+            Console.Read();
             Console.WriteLine(remoteAccessInfo);
 
             // Chama o método para coletar informações sobre o relógio
             string timeInfo = TimeInfo.GetTimeInfo();
+            Console.Read();
             Console.WriteLine(timeInfo);
 
             Console.WriteLine("Digite qualquer tecla para finalizar o programa");
