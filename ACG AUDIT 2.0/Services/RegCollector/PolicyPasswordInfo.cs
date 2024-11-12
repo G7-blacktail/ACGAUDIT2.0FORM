@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Text.Json;
+using ACG_AUDIT_2._0.Services.InfoCreator;
 
 namespace ACG_AUDIT_2._0.Services.RegCollector;
     internal class PolicyPasswordInfo
@@ -18,9 +20,15 @@ namespace ACG_AUDIT_2._0.Services.RegCollector;
 
             // Extraia os valores desejados
             ExtractDesiredValues(policyLines);
+
+            // Extraia os valores desejados
+            var settings = ExtractDesiredValues(policyLines);
+
+            // Salvar as configurações em um arquivo JSON
+            SaveSettingsToJson(settings);
         }
 
-        private void ExtractDesiredValues(string[] policyLines)
+        private ScreenSaverSettings ExtractDesiredValues(string[] policyLines)
         {
             string screenSaverIsSecure = "";
             string screenSaveActive = "";
@@ -65,40 +73,51 @@ namespace ACG_AUDIT_2._0.Services.RegCollector;
             Console.WriteLine($"Forçar proteção de tela específica: {screenSaverExe}");
             Console.WriteLine("-------------------------------------------------------------------------------------------------------");
 
+            return new ScreenSaverSettings(GetBooleanValue(screenSaveActive), GetBooleanValue(screenSaverIsSecure), GetTimeOutValue(screenSaveTimeOut), screenSaverExe);
+
         }
 
-        private string ExtractValue(string line)
-        {
-            // Extrai o valor após o último ;
-            string[] parts = line.Split(new[] { ';' }, StringSplitOptions.None);
-            return parts.Length > 1 ? parts[^1].Trim() : string.Empty;
-        }
+    private void SaveSettingsToJson(ScreenSaverSettings settings)
+    {
+        string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText("screen_saver_settings.json", json);
+        Console.WriteLine("As configurações de proteção de tela foram salvas em screen_saver_settings.json");
+    }
 
-        private string GetBooleanValue(string value)
-        {
-            if (int.TryParse(value, out int intValue) && intValue == 1)
-            {
-                return "Habilitado";
-            }
-            else if (string.IsNullOrEmpty(value))
-            {
-                return "Não configurado";
-            }
-            else
-            {
-                return "Desabilitado";
-            }
-        }
+    private string ExtractValue(string line)
+    {
+        // Extrai o valor após o último ;
+        string[] parts = line.Split(new[] { ';' }, StringSplitOptions.None);
+        return parts.Length > 1 ? parts[^1].Trim() : string.Empty;
+    }
 
-        private string GetTimeOutValue(string value)
+    private string GetBooleanValue(string value)
+    {
+        if (int.TryParse(value, out int intValue) && intValue == 1)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                return "Não configurado";
-            }
-            else
-            {
-                return value + " Segundos";
-            }
+            return "Habilitado";
         }
+        else if (string.IsNullOrEmpty(value))
+        {
+            return "Não configurado";
+        }
+        else
+        {
+            return "Desabilitado";
+        }
+    }
+
+    private string GetTimeOutValue(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return "Não configurado";
+        }
+        else
+        {
+            return value + " Segundos";
+        }
+    }
+
+
     }

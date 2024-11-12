@@ -6,8 +6,8 @@
     <RootNamespace>ACG_AUDIT_2._0</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <EmbedManifest>true</EmbedManifest>
+    <!-- <ApplicationManifest>app.manifest</ApplicationManifest>
+    <EmbedManifest>true</EmbedManifest> -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,12 +18,12 @@
     <PackageReference Include="System.Management" Version="8.0.0" />
     <PackageReference Include="WindowsFirewallHelper" Version="2.2.0.86" />
   </ItemGroup>
-    <ItemGroup>
+    <!-- <ItemGroup>
     <None Include="app.manifest">
       <SubType>ManifestResource</SubType>
       <LogicalName>app.manifest</LogicalName>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+  </ItemGroup> -->
 
 </Project>

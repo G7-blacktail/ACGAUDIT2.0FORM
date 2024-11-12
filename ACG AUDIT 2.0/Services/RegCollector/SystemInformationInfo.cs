@@ -2,6 +2,7 @@ using System;
 using System.Management;
 using System.Globalization;
 using System.DirectoryServices.ActiveDirectory;
+using ACG_AUDIT_2._0.Services.InfoCreator;
 
     namespace ACG_AUDIT_2._0.Services.RegCollector;
     internal class SystemInformationInfo
@@ -9,6 +10,34 @@ using System.DirectoryServices.ActiveDirectory;
         private static string query = "SELECT * FROM Win32_OperatingSystem";
         private const string indisponivel = "Não disponível";
 
+     public static SystemInfo CollectSystemInfo()
+    {
+        SystemInfo systemInfo = new SystemInfo
+        {
+            HostName = GetHostName(),
+            OperatingSystem = GetOperatingSystemInfo(),
+            SystemManufacturer = GetSystemManufacturer(),
+            SystemModel = GetSystemModel(),
+            SystemType = GetSystemType(),
+            ProcessorInfo = GetProcessorInfo(),
+            BIOSVersion = GetBIOSVersion(),
+            WindowsFolder = GetWindowsFolder(),
+            SystemFolder = GetSystemFolder(),
+            BootDevice = GetBootDevice(),
+            SystemLocale = GetSystemLocale(),
+            InputLocale = GetInputLocale(),
+            TimeZone = GetTimeZone(),
+            MemoryInfo = GetMemoryInfo(),
+            VirtualMemoryInfo = GetVirtualMemoryInfo(),
+            PageFileLocation = GetPageFileLocation(),
+            DomainName = GetDomainName(),
+            LogonServer = GetLogonServer(),
+            Hotfixes = GetHotfixes(),
+            NetworkInfo = GetNetworkInfo()
+        };
+
+        return systemInfo;
+    }
     public static string GetVirtualMemoryInfo()
     {
         long totalVirtualMemory = GetVirtualMemorySize();
