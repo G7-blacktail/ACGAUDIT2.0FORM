@@ -10,10 +10,37 @@ namespace ACG_AUDIT
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new TelaInicial());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // Criar e mostrar a tela de carregamento
+            TelaInicial loadingForm = new TelaInicial();
+            loadingForm.Show();
+
+            // Executar o trabalho em segundo plano
+            Task.Run(() =>
+            {
+                // Simulando várias etapas de um processo
+                for (int i = 0; i < 5; i++)
+                {
+                    loadingForm.Invoke((MethodInvoker)delegate
+                    {
+                        loadingForm.UpdateStatus($"Executando etapa {i + 1}...");
+                    });
+
+                    // Simula trabalho em cada etapa
+                    Thread.Sleep(2000); // Simula 2 segundos de trabalho
+                }
+
+                // Fechar a tela de carregamento no thread da interface do usuário
+                loadingForm.Invoke((MethodInvoker)delegate
+                {
+                    loadingForm.Close();
+                });
+            });
+
+            // Mantém a aplicação em execução
+            Application.Run();
         }
     }
 }
