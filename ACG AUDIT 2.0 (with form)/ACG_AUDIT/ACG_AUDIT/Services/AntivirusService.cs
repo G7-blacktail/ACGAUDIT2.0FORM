@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ACG_AUDIT.ClassCollections;
+using System;
 using System.Management;
 
 namespace ACG_AUDIT.Services
 {
-    internal class AntivirusInfo
+    internal class AntivirusService
     {
-        public static string GetAntivirusInfo()
+        public static AntivirusProductList GetAntivirusInfo()
         {
-            string result = "Antivirus:\n----------------------------\n";
+            AntivirusProductList antivirusProductList = new AntivirusProductList();
+
             try
             {
                 // Cria um objeto para buscar informações sobre produtos antivírus
@@ -25,15 +23,19 @@ namespace ACG_AUDIT.Services
                     string displayName = antivirus["displayName"]?.ToString() ?? "Desconhecido";
                     string productState = antivirus["productState"]?.ToString() ?? "Desconhecido";
 
-                    result += $"Nome: {displayName}, Estado: {productState}\n";
+                    antivirusProductList.Products.Add(new AntivirusProduct
+                    {
+                        DisplayName = displayName,
+                        ProductState = productState
+                    });
                 }
             }
             catch (Exception ex)
             {
-                result += $"Erro ao coletar informações: {ex.Message}\n";
+                Console.WriteLine($"Erro ao coletar informações do antivírus: {ex.Message}");
             }
 
-            return result;
+            return antivirusProductList;
         }
     }
 }

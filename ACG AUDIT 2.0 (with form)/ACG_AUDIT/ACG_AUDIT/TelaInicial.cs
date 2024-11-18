@@ -13,7 +13,7 @@ namespace ACG_AUDIT
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(400, 150);
+            this.Size = new Size(650, 150);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -21,9 +21,10 @@ namespace ACG_AUDIT
             // Configurando a barra de progresso
             progressBar = new ProgressBar
             {
-                Location = new Point(50, 50),
-                Size = new Size(300, 30),
+                Location = new Point(100, 50),
+                Size = new Size(450, 30),
                 Style = ProgressBarStyle.Marquee // Estilo de carregamento em movimento
+                
             };
 
             // Criar e estilizar o Label
@@ -31,9 +32,9 @@ namespace ACG_AUDIT
             {
                 Text = "Iniciando o processo...",
                 Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleCenter,
+                TextAlign = ContentAlignment.TopCenter,
                 Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = Color.DarkBlue
+                ForeColor = Color.DarkGray
             };
 
             // Adicionar os controles ao Formulário

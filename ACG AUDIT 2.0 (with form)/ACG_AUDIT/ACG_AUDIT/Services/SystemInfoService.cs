@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACG_AUDIT.ClassCollections;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
 using System.Globalization;
@@ -9,10 +10,45 @@ using System.Threading.Tasks;
 
 namespace ACG_AUDIT.Services
 {
-    internal class SystemInfo
+    internal class SystemInfoService
     {
         private static string query = "SELECT * FROM Win32_OperatingSystem";
         private const string indisponivel = "Não disponível";
+
+        public static SystemInfo CollectSystemInfo()
+        {
+            SystemInfo systemInfo = new SystemInfo();
+
+            try
+            {
+                systemInfo.HostName = GetHostName();
+                systemInfo.OperatingSystem = GetOperatingSystemInfo();
+                systemInfo.SystemManufacturer = GetSystemManufacturer();
+                systemInfo.SystemModel = GetSystemModel();
+                systemInfo.SystemType = GetSystemType();
+                systemInfo.ProcessorInfo = GetProcessorInfo();
+                systemInfo.BIOSVersion = GetBIOSVersion();
+                systemInfo.WindowsFolder = GetWindowsFolder();
+                systemInfo.SystemFolder = GetSystemFolder();
+                systemInfo.BootDevice = GetBootDevice();
+                systemInfo.SystemLocale = GetSystemLocale();
+                systemInfo.InputLocale = GetInputLocale();
+                systemInfo.TimeZone = GetTimeZone();
+                systemInfo.MemoryInfo = GetMemoryInfo();
+                systemInfo.VirtualMemoryInfo = GetVirtualMemoryInfo();
+                systemInfo.PageFileLocation = GetPageFileLocation();
+                systemInfo.DomainName = GetDomainName();
+                systemInfo.LogonServer = GetLogonServer();
+                systemInfo.Hotfixes = GetHotfixes();
+                systemInfo.NetworkInfo = GetNetworkInfo();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao coletar informações do sistema: " + ex.Message);
+            }
+
+            return systemInfo;
+        }
 
         public static string GetVirtualMemoryInfo()
         {
@@ -21,6 +57,8 @@ namespace ACG_AUDIT.Services
             long usedVirtualMemory = GetUsedVirtualMemory();
             return $"Total: {ConvertToGB(totalVirtualMemory)} GB, Disponível: {ConvertToGB(availableVirtualMemory)} GB, Em Uso: {ConvertToGB(usedVirtualMemory)} GB";
         }
+
+
 
         public static string GetHostName()
         {

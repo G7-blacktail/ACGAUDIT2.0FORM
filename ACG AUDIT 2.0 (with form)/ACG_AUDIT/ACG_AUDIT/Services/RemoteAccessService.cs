@@ -1,21 +1,17 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ACG_AUDIT.ClassCollections;
+using Microsoft.Win32;
 
 namespace ACG_AUDIT.Services
 {
-    internal class RemoteAccessInfo
+    internal class RemoteAccessService
     {
-        public static string GetRemoteAccessInfo()
+        public static RemoteAccess GetRemoteAccessInfo()
         {
-            string result = "Acesso remoto:\n----------------------------\n";
+            RemoteAccess remoteAccess = new RemoteAccess();
 
             // Verifica a Assistência Remota
             string allowRemoteAssistance = GetRegistryValue(@"SYSTEM\CurrentControlSet\Control\Remote Assistance", "fAllowToGetHelp");
-            allowRemoteAssistance = allowRemoteAssistance == "1" ? "Ativo" : "Inativo";
+            remoteAccess.RemoteAssistance = allowRemoteAssistance == "1" ? "Ativo" : "Inativo";
 
             // Verifica a Área de Trabalho Remota
             string allowRemoteDesktop = GetRegistryValue(@"SYSTEM\CurrentControlSet\Control\Terminal Server", "fDenyTSConnections");
@@ -23,32 +19,27 @@ namespace ACG_AUDIT.Services
 
             if (allowRemoteDesktop == "0")
             {
-                allowRemoteDesktop = "Permitido";
-                requireNetworkLevelAuthentication = requireNetworkLevelAuthentication == "1" ? "Sim" : "Não";
+                remoteAccess.RemoteDesktop = "Permitido";
+                remoteAccess.RequireNetworkLevelAuthentication = requireNetworkLevelAuthentication == "1" ? "Sim" : "Não";
             }
             else
             {
-                allowRemoteDesktop = "Não permitido";
-                requireNetworkLevelAuthentication = "Desabilitado";
+                remoteAccess.RemoteDesktop = "Não permitido";
+                remoteAccess.RequireNetworkLevelAuthentication = "Desabilitado";
             }
 
-            // Monta o resultado
-            result += $"Assistência Remota: {allowRemoteAssistance}\n";
-            result += $"Área de Trabalho Remota: {allowRemoteDesktop}\n";
-            result += $"Requer autenticação no nível da rede: {requireNetworkLevelAuthentication}\n";
-
-            return result;
+            return remoteAccess;
         }
 
         private static string GetRegistryValue(string path, string valueName)
         {
             try
             {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(path)!)
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(path))
                 {
                     if (key != null)
                     {
-                        object value = key.GetValue(valueName)!;
+                        object value = key.GetValue(valueName);
                         return value?.ToString() ?? "Desconhecido";
                     }
                 }

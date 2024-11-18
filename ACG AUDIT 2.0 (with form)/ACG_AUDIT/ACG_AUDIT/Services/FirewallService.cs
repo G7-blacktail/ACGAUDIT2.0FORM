@@ -1,20 +1,15 @@
-﻿using System;
+﻿using ACG_AUDIT.ClassCollections;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACG_AUDIT.Services
 {
-    internal class FirewallInfo
+    internal class FirewallService
     {
-        public string? Nome { get; set; }
-        public string? Estado { get; set; }
-
-        public static List<FirewallInfo> GetFirewallProfiles()
+        public static FirewallProfileList GetFirewallProfiles()
         {
-            List<FirewallInfo> firewallInfoList = new List<FirewallInfo>();
+            FirewallProfileList firewallProfileList = new FirewallProfileList();
 
             // Executar o comando PowerShell para obter perfis de firewall
             var psi = new ProcessStartInfo
@@ -28,10 +23,10 @@ namespace ACG_AUDIT.Services
 
             using (var process = Process.Start(psi))
             {
-                using (var reader = process!.StandardOutput)
+                using (var reader = process.StandardOutput)
                 {
                     string line;
-                    while ((line = reader.ReadLine()!) != null)
+                    while ((line = reader.ReadLine()) != null)
                     {
                         // Ignorar cabeçalho
                         if (line.Contains("Name") || string.IsNullOrWhiteSpace(line))
@@ -48,29 +43,18 @@ namespace ACG_AUDIT.Services
                             _ => parts[0]
                         };
 
-                        string ativado = parts[1] == "True" ? "Habilitado" : "Desabilitado";
+                        string status = parts[1] == "True" ? "Habilitado" : "Desabilitado";
 
-                        firewallInfoList.Add(new FirewallInfo
+                        firewallProfileList.Profiles.Add(new FirewallProfile
                         {
-                            Nome = nameProp,
-                            Estado = ativado
+                            Name = nameProp,
+                            Status = status
                         });
                     }
                 }
             }
 
-            return firewallInfoList;
-        }
-
-        public static void DisplayFirewallInfo()
-        {
-            var firewallProfiles = GetFirewallProfiles();
-            Console.WriteLine("\nFirewall:");
-            Console.WriteLine("----------------------------");
-            foreach (var profile in firewallProfiles)
-            {
-                Console.WriteLine($"Nome: {profile.Nome}, Estado: {profile.Estado}");
-            }
+            return firewallProfileList;
         }
     }
 }

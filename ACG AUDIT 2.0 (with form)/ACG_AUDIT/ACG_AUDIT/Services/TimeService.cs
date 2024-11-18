@@ -1,37 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ACG_AUDIT.ClassCollections;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACG_AUDIT.Services
 {
-    internal class TimeInfo
+    internal class TimeService
     {
-        public static string GetTimeInfo()
+        public static TimeInfo GetTimeInfo()
         {
-            string result = "Relógio:\n----------------------------\n";
+            TimeInfo timeInfo = new TimeInfo();
 
             // Obtém a hora local
             DateTime localTime = DateTime.Now;
-            string dateString = $"{localTime:dd/MM/yyyy HH:mm:ss}";
+            timeInfo.CurrentDeviceTime = $"{localTime:dd/MM/yyyy HH:mm:ss}";
 
             // Executa o comando w32tm para sincronizar com um servidor NTP
             string ntpServerOut = "pool.ntp.org";
             string command = $"w32tm /stripchart /computer:{ntpServerOut} /samples:1 /dataonly /packetinfo";
-            string ntpServerUsed = ExecuteCommand(command);
+            timeInfo.NtpServerUsed = ExecuteCommand(command);
 
             // Obtém a configuração atual do cliente NTP
             string ntpConfig = ExecuteCommand("w32tm /query /configuration");
-            string ntpServer = GetNtpServerFromConfig(ntpConfig);
+            timeInfo.InternetNtpServer = GetNtpServerFromConfig(ntpConfig);
 
-            // Monta o resultado
-            result += $"Hora atual do dispositivo: {dateString}\n";
-            result += $"Servidor de Horário: {ntpServerUsed}\n";
-            result += $"Servidor de horário na internet: {ntpServer}\n";
-
-            return result;
+            return timeInfo;
         }
 
         private static string ExecuteCommand(string command)
@@ -47,7 +39,7 @@ namespace ACG_AUDIT.Services
 
                 using (Process process = Process.Start(processInfo)!)
                 {
-                    using (System.IO.StreamReader reader = process!.StandardOutput)
+                    using (System.IO.StreamReader reader = process.StandardOutput)
                     {
                         return reader.ReadToEnd();
                     }
@@ -61,7 +53,7 @@ namespace ACG_AUDIT.Services
 
         private static string GetNtpServerFromConfig(string configOutput)
         {
-            foreach (var line in configOutput.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries))
+            foreach (var line in configOutput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (line.Contains("NtpServer"))
                 {

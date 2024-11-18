@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace ACG_AUDIT
 {
     partial class TelaInicial
@@ -32,55 +34,46 @@ namespace ACG_AUDIT
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TelaInicial));
             TituloSoftwareLabel = new Label();
             ExecucaoProcessoLabel = new Label();
-            statusStrip1 = new StatusStrip();
-            ContadorProgressBar = new ToolStripProgressBar();
             TituloLabel = new Label();
-            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // TituloSoftwareLabel
             // 
-            resources.ApplyResources(TituloSoftwareLabel, "TituloSoftwareLabel");
+            TituloSoftwareLabel.Location = new Point(0, 0);
             TituloSoftwareLabel.Name = "TituloSoftwareLabel";
+            TituloSoftwareLabel.Size = new Size(100, 23);
+            TituloSoftwareLabel.TabIndex = 3;
             TituloSoftwareLabel.Click += label1_Click;
             // 
             // ExecucaoProcessoLabel
             // 
-            resources.ApplyResources(ExecucaoProcessoLabel, "ExecucaoProcessoLabel");
+            ExecucaoProcessoLabel.Location = new Point(0, 0);
             ExecucaoProcessoLabel.Name = "ExecucaoProcessoLabel";
-            // 
-            // statusStrip1
-            // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { ContadorProgressBar });
-            resources.ApplyResources(statusStrip1, "statusStrip1");
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.RenderMode = ToolStripRenderMode.ManagerRenderMode;
-            // 
-            // ContadorProgressBar
-            // 
-            ContadorProgressBar.Name = "ContadorProgressBar";
-            resources.ApplyResources(ContadorProgressBar, "ContadorProgressBar");
+            ExecucaoProcessoLabel.Size = new Size(100, 23);
+            ExecucaoProcessoLabel.TabIndex = 2;
             // 
             // TituloLabel
             // 
-            resources.ApplyResources(TituloLabel, "TituloLabel");
+            TituloLabel.Location = new Point(0, 0);
             TituloLabel.Name = "TituloLabel";
+            TituloLabel.Size = new Size(100, 23);
+            TituloLabel.TabIndex = 0;
             // 
             // TelaInicial
             // 
-            resources.ApplyResources(this, "$this");
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.MintCream;
+            ClientSize = new Size(800, 400);
             Controls.Add(TituloLabel);
-            Controls.Add(statusStrip1);
             Controls.Add(ExecucaoProcessoLabel);
             Controls.Add(TituloSoftwareLabel);
             ForeColor = Color.Black;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "TelaInicial";
-            statusStrip1.ResumeLayout(false);
-            statusStrip1.PerformLayout();
+            SizeGripStyle = SizeGripStyle.Hide;
+            Text = "ACG AUDIT";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -92,8 +85,6 @@ namespace ACG_AUDIT
 
         private Label TituloSoftwareLabel;
         private Label ExecucaoProcessoLabel;
-        private StatusStrip statusStrip1;
-        private ToolStripProgressBar ContadorProgressBar;
         private Label TituloLabel;
     }
 }
