@@ -5,8 +5,9 @@ namespace ACG_AUDIT_2._0.Services.RegCollector;
 internal class BitLockerInfo
 {
 
-        public static void CheckBitLockerStatusForAllDisks()
+    public static Dictionary<string, string> CheckBitLockerStatusForAllDisks()
     {
+        Dictionary<string, string> bitLockerStatuses = new Dictionary<string, string>();
         ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk");
         ManagementObjectCollection disks = searcher.Get();
 
@@ -17,11 +18,11 @@ internal class BitLockerInfo
             if (!string.IsNullOrEmpty(driveLetter))
             {
                 string bitLockerStatus = GetBitLockerStatus(driveLetter);
-                Console.WriteLine("---------------------------------- BitLocker -----------------------------------------------------------");
-                Console.WriteLine($"BitLocker status for {driveLetter}/ {bitLockerStatus}");
-                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+                bitLockerStatuses[driveLetter] = bitLockerStatus;
             }
         }
+
+        return bitLockerStatuses;
     }
 
     public static string GetBitLockerStatus(string driveLetter)
