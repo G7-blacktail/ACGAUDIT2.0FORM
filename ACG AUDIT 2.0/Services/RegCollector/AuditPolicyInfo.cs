@@ -22,16 +22,7 @@ public class AuditPolicyInfo
     private void UpdatePolicyFile()
     {
         // Verifica se o arquivo existe e executa o secedit para criar/atualizar
-        if (!File.Exists(filePath))
-        {
-            // Console.WriteLine("Arquivo audit_policies.inf não encontrado. Criando/Atualizando o arquivo...");
-            ExecuteSecedit();
-        }
-        else
-        {
-            // Console.WriteLine("Arquivo audit_policies.inf encontrado. Atualizando o arquivo...");
-            ExecuteSecedit();
-        }
+        ExecuteSecedit();
     }
 
     private void ExecuteSecedit()
@@ -57,7 +48,6 @@ public class AuditPolicyInfo
     {
         if (!File.Exists(filePath))
         {
-            // Console.WriteLine("O arquivo audit_policies.inf não foi encontrado.");
             return;
         }
 
@@ -85,51 +75,47 @@ public class AuditPolicyInfo
             }
         }
 
-        // Filtrar as políticas relevantes
-        PolicyValues = FilterPolicyValues(PolicyValues);
+        // Filtrar e renomear as políticas relevantes
+        PolicyValues = FilterAndRenamePolicyValues(PolicyValues);
     }
 
-    private Dictionary<string, string> FilterPolicyValues(Dictionary<string, string> policyValues)
+    private Dictionary<string, string> FilterAndRenamePolicyValues(Dictionary<string, string> policyValues)
     {
-        // Mapeamento dos eventos de auditoria relevantes
-        var relevantEventNames = new[]
+        // Mapeamento dos eventos de auditoria
+        var eventDisplayNames = new Dictionary<string, string>
         {
-            "AuditLogonEvents",
-            "AuditSystemEvents",
-            "AuditObjectAccess",
-            "AuditPrivilegeUse",
-            "AuditPolicyChange",
-            "AuditAccountManage",
-            "AuditProcessTracking",
-            "AuditDSAccess",
-            "AuditAccountLogon"
+            { "AuditLogonEvents", "Auditoria de eventos de logon" },
+            { "AuditSystemEvents", "Auditoria de eventos de sistema" },
+            { "AuditObjectAccess", "Auditoria de acesso a objetos" },
+            { "AuditPrivilegeUse", "Auditoria de uso de privilégios" },
+            { "AuditPolicyChange", "Auditoria de alteração de políticas" },
+            { "AuditAccountManage", "Auditoria de gerenciamento de conta" },
+            { "AuditProcessTracking", "Auditoria de acompanhamento de processos" },
+            { "AuditDSAccess", "Auditoria de acesso ao serviço de diretório" },
+            { "AuditAccountLogon", "Auditoria de eventos de logon de conta" }
+        };
+
+        // Mapeamento dos resultados
+        var resultMapping = new Dictionary<string, string>
+        {
+            { "0", "Sem auditoria" },
+            { "1", "Exito" },
+            { "2", "Falha" },
+            { "3", "Exito, Falha" }
         };
 
         var filteredPolicyValues = new Dictionary<string, string>();
 
-        foreach (var eventName in relevantEventNames)
+        foreach (var eventName in eventDisplayNames.Keys)
         {
             if (policyValues.TryGetValue(eventName, out string value))
             {
-                filteredPolicyValues[eventName] = value;
+                string displayName = eventDisplayNames[eventName];
+                string resultDescription = resultMapping.ContainsKey(value) ? resultMapping[value] : value;
+                filteredPolicyValues[displayName] = resultDescription; // Renomear chave e valor
             }
         }
 
         return filteredPolicyValues;
- }
-
-    public void SaveFilteredPolicyToFile()
-    {
-        // Definir o caminho para salvar o arquivo filtrado
-        string logDirectory = @"C:\Logs\acg audit files";
-        Directory.CreateDirectory(logDirectory); // Cria o diretório se não existir
-
-        string filteredFilePath = Path.Combine(logDirectory, "filtered_audit_policy.json");
-
-        // Serializar as políticas filtradas em JSON
-        string json = JsonSerializer.Serialize(PolicyValues, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(filteredFilePath, json);
-
-        // Console.WriteLine($"As políticas filtradas foram salvas em {filteredFilePath}");
     }
 }

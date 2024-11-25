@@ -9,9 +9,9 @@ namespace ACG_AUDIT.Services
 {
     public class JsonFileService
     {
-        public static void SaveToJson<T>(T data, string filePath)
+        public static void SaveToJson<T>(T data, string filePath, JsonSerializerOptions options)
         {
-            string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+            string json = JsonSerializer.Serialize(data, options);
             File.WriteAllText(filePath, json);
         }
     }

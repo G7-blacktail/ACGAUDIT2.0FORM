@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Management;
 
 namespace ACG_AUDIT_2._0.Services.RegCollector;
+
 internal class BitLockerInfo
 {
-
     public static Dictionary<string, string> CheckBitLockerStatusForAllDisks()
     {
         Dictionary<string, string> bitLockerStatuses = new Dictionary<string, string>();

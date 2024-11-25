@@ -17,9 +17,6 @@ class Program
         // Coletar informações de políticas de auditoria
         var auditPolicyInfo = new AuditPolicyInfo("audit_policies.inf");
 
-        // Salvar as políticas filtradas em um arquivo JSON
-        auditPolicyInfo.SaveFilteredPolicyToFile();
-
         // Criar uma instância de AuditInfo
         var auditInfo = new AuditInfo
         {
@@ -27,8 +24,14 @@ class Program
             AuditPolicy = auditPolicyInfo.PolicyValues // Usar as políticas filtradas
         };
 
+                    // Serializar AuditInfo em JSON com UTF-8
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
+            };
         // Serializar AuditInfo em JSON
-        string json = JsonSerializer.Serialize(auditInfo, new JsonSerializerOptions { WriteIndented = true });
+        string json = JsonSerializer.Serialize(auditInfo, options);
 
         // Definir o caminho para salvar o arquivo
         string logDirectory = @"C:\Logs\acg audit files";
