@@ -124,17 +124,17 @@ public class Program
     private void CriarPastaConfig()
     {
         string proprietiesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties");
-        
+
         if (!Directory.Exists(proprietiesFolderPath))
         {
             Directory.CreateDirectory(proprietiesFolderPath);
             new DirectoryInfo(proprietiesFolderPath).Attributes |= FileAttributes.Hidden;
-        }
 
-        string acgConfigFolderPath = Path.Combine(proprietiesFolderPath, ".acg_config");
-        if (!Directory.Exists(acgConfigFolderPath))
-        {
-            Directory.CreateDirectory(acgConfigFolderPath);
+            string acgConfigFolderPath = Path.Combine(proprietiesFolderPath, ".acg_config");
+            if (!Directory.Exists(acgConfigFolderPath))
+            {
+                Directory.CreateDirectory(acgConfigFolderPath);
+            }
         }
     }
 

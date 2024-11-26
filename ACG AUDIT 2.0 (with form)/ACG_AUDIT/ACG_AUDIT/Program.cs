@@ -11,11 +11,17 @@ namespace ACG_AUDIT
 {
     internal static class Program
     {
+        private static readonly string logsDirectory = @"C:\Logs\acg audit files";
+        private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "Logs");
+
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // Criar a estrutura de diretórios se não existir
+            CreateLogDirectories();
 
             // Criar e mostrar a tela de carregamento
             TelaInicial loadingForm = new TelaInicial();
@@ -232,6 +238,43 @@ namespace ACG_AUDIT
 
                     await Task.Delay(2000); // Atraso de 2 segundos
 
+                    loadingForm.Invoke((MethodInvoker)delegate
+                    {
+                        loadingForm.UpdateStatus("Etapa de envio das informações.");
+                    });
+
+                    // Após salvar o JSON
+                    var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint
+                    bool envioBemSucedido = false; // Controle de estado
+
+                    try
+                    {
+                        await jsonSender.SendJsonFileAsync(Path.Combine(logsDirectory, "Program_info.json"));
+                        envioBemSucedido = true; // Marca como bem-sucedido se não houver exceções
+                        loadingForm.Invoke((MethodInvoker)delegate
+                        {
+                            loadingForm.UpdateStatus("Envio executado com sucesso.");
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Exibe uma caixa de mensagem com o erro
+                        MessageBox.Show($"Falha ao enviar as informações: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        // Fechar a tela de carregamento no thread da interface do usuário
+                        loadingForm.Invoke((MethodInvoker)delegate
+                        {
+                            loadingForm.Close();
+                        });
+                        return; // Impede que o código continue após um erro
+                    }
+
+                    // Apenas aguarde o atraso se o envio foi bem-sucedido
+                    if (envioBemSucedido)
+                    {
+                        await Task.Delay(2000); // Atraso de 2 segundos
+                    }
+
                     // Fechar a tela de carregamento no thread da interface do usuário
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
@@ -253,6 +296,19 @@ namespace ACG_AUDIT
 
             // Finaliza a aplicação após o fechamento do formulário
             Application.Exit();
+        }
+
+        private static void CreateLogDirectories()
+        {
+            if (!Directory.Exists(logsDirectory))
+            {
+                Directory.CreateDirectory(logsDirectory);
+            }
+
+            if (!Directory.Exists(logsSubDirectory))
+            {
+                Directory.CreateDirectory(logsSubDirectory);
+            }
         }
 
         private static DialogResult ShowConfirmationDialog()
