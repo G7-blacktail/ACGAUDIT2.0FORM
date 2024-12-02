@@ -7,9 +7,7 @@ using Newtonsoft.Json;
 
 public class Program
 {
-    // private const string jsonFilePath = "config.json";
     private string jsonFilePath => Path.Combine(configFolderPath, "config.json");
-    // private const string logFilePath = "log.txt";
     private static string logFilePath => Path.Combine(configFolderPath, "log.txt");
     private static string userInfoPath => Path.Combine(userDocsPath, ".proprieties", "UserInfo.txt");
     private static string configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config");
@@ -32,8 +30,8 @@ public class Program
 
     public Program()
     {
-        // ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "ACG AUDIT.exe");
-        ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Debug\net8.0-windows\ACG_AUDIT.exe";
+        ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg_form", "ACG_AUDIT.exe");
+        //ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Debug\net8.0-windows\ACG_AUDIT.exe";
     }
         public void Iniciar()
     {
@@ -104,6 +102,7 @@ public class Program
     private void ExecutarAcao()
     {
         Process.Start(ACG_HOME);
+        Console.ReadKey();
     }
 
     private DateTime CalcularProximaExecucao()
@@ -119,18 +118,18 @@ public class Program
         File.AppendAllText(logFilePath, "Programa iniciado pelo Agendador de Tarefas." + Environment.NewLine);
         string log = $"{DateTime.Now} | {(comparacao < ultimaExecucao ? "  Após o prazo " : "Dentro do prazo")} | {ultimaExecucao} | {proximaExecucao}";
         File.AppendAllText(logFilePath, log + Environment.NewLine);
+        Console.ReadKey();
     }
 
     private void CriarPastaConfig()
     {
         string proprietiesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties");
+        string acgConfigFolderPath = Path.Combine(proprietiesFolderPath, ".acg_config");
 
         if (!Directory.Exists(proprietiesFolderPath))
         {
             Directory.CreateDirectory(proprietiesFolderPath);
             new DirectoryInfo(proprietiesFolderPath).Attributes |= FileAttributes.Hidden;
-
-            string acgConfigFolderPath = Path.Combine(proprietiesFolderPath, ".acg_config");
             if (!Directory.Exists(acgConfigFolderPath))
             {
                 Directory.CreateDirectory(acgConfigFolderPath);
@@ -155,38 +154,6 @@ public class Program
             File.WriteAllText(path2, "");
         }
 
-        // Verificar se o arquivo UserInfo.txt existe dentro de .proprieties
-        string proprietiesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties");
-        string userInfoPath = Path.Combine(proprietiesFolderPath, "UserInfo.txt");
-        if (!File.Exists(userInfoPath))
-        {
-            // Se não existir, pedir dados ao usuário e criar o arquivo
-            PedirDadosUsuario(userInfoPath);
-        }
-    }
-
-    private void PedirDadosUsuario(string userInfoPath)
-    {
-        SW_HIDE = 1;
-        IntPtr handle = GetConsoleWindow();
-        ShowWindow(handle, SW_HIDE);
-        Console.Write("Esta janela está sendo apresentada para realização da configuração de email e cpf do usuário do ACG AUDIT\nainda não cadastrado." 
-        + "Para uma execução de mais de um usuário esta configuração é necessária para que os usuários diferentes sejam identificados pelo sistema. \n"
-        + "Qualquer dúvida entre em contato com a AR Lidersis para orientações.\n\n");
-        Console.Write("Digite seu email: ");
-        string email = Console.ReadLine();
-
-        Console.Write("Digite seu CPF: ");
-        string cpf = Console.ReadLine();
-
-        // Salva os dados do usuário no arquivo UserInfo.txt
-        string[] userInfoLines = { $"Usuário: {email}", $"CPF: {cpf}" };
-        File.WriteAllLines(userInfoPath, userInfoLines);
-
-        Console.WriteLine("Dados salvos com sucesso!");
-        SW_HIDE = 0;
-        handle = GetConsoleWindow();
-        ShowWindow(handle, SW_HIDE);
     }
 
         public static void Main()

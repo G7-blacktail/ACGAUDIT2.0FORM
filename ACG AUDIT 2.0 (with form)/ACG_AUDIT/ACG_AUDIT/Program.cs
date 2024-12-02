@@ -139,6 +139,15 @@ namespace ACG_AUDIT
                         TimeInfo = timeInfo,
                         ScreenSaverSettings = screenSaverSettings
                     };
+                    // Definir o caminho para salvar o JSON na pasta AppData do usuário
+                    string jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Program_info.json");
+
+                    // Criar diretório se não existir
+                    string directoryPath = Path.GetDirectoryName(jsonFilePath);
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
 
                     // Salvar informações em JSON com tratamento de caracteres acentuados
                     var options = new JsonSerializerOptions
@@ -146,7 +155,7 @@ namespace ACG_AUDIT
                         WriteIndented = true,
                         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
                     };
-                    JsonFileService.SaveToJson(combinedInfo, "Program_info.json", options);
+                    JsonFileService.SaveToJson(combinedInfo, jsonFilePath, options);
 
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
