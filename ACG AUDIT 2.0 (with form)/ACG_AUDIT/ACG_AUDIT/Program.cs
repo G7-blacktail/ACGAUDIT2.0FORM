@@ -116,7 +116,8 @@ namespace ACG_AUDIT
                     await Task.Delay(2000); // Atraso de 2 segundos
 
                     // Coletar informações de proteção de tela
-                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Substitua pelo caminho correto
+                    // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Substitua pelo caminho correto
+                    string filePath = @"C:\Windows\System32\GroupPolicy\User\Registry.pol";
                     ScreenSaverSettings screenSaverSettings = ScreenSaverService.GetScreenSaverSettings(filePath);
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
@@ -165,17 +166,24 @@ namespace ACG_AUDIT
                     await Task.Delay(2000); // Atraso de 2 segundos
 
                     // Solicitar ao usuário se deseja continuar
-                    loadingForm.Invoke((MethodInvoker)delegate
+                    loadingForm.Invoke((MethodInvoker)async delegate
                     {
                         DialogResult result = ShowConfirmationDialog();
                         if (result == DialogResult.Yes)
                         {
                             // Executar o outro programa antes de finalizar
-                            string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Debug\net8.0\ACG AUDIT 2.0.exe";
+                            string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
 
                             if (File.Exists(executablePath))
                             {
-                                loadingForm.UpdateStatus("Abrindo o coletor avançado...");
+                                
+
+                                loadingForm.Invoke((MethodInvoker)delegate
+                                {
+                                    loadingForm.UpdateStatus("Abrindo o coletor avançado...");
+                                });
+
+                                await Task.Delay(2000);
 
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
@@ -188,7 +196,13 @@ namespace ACG_AUDIT
                                 if (process != null)
                                 {
                                     process.WaitForExit(); // Aguardar a conclusão do processo
-                                    loadingForm.UpdateStatus("Coletor avançado finalizado.");
+                                    loadingForm.Invoke((MethodInvoker)delegate
+                                    {
+                                        loadingForm.UpdateStatus("Coletor avançado finalizado.");
+                                    });
+
+                                    await Task.Delay(2000);
+
                                 }
 
                                 // Ler o arquivo gerado no log e adicionar ao JSON
@@ -230,12 +244,23 @@ namespace ACG_AUDIT
                                 }
                                 else
                                 {
-                                    loadingForm.UpdateStatus("Arquivo de log não encontrado.");
+                                    loadingForm.Invoke((MethodInvoker)delegate
+                                    {
+                                        loadingForm.UpdateStatus("Arquivo de log não encontrado.");
+                                    });
+
+                                    await Task.Delay(2000);
+                                
                                 }
                             }
                             else
                             {
-                                loadingForm.UpdateStatus("Coletor avançado não encontrado.");
+                                loadingForm.Invoke((MethodInvoker)delegate
+                                {
+                                    loadingForm.UpdateStatus("Coletor avançado não encontrado.");
+                                });
+
+                                await Task.Delay(2000);
                             }
                         }
                         else
@@ -251,6 +276,8 @@ namespace ACG_AUDIT
                     {
                         loadingForm.UpdateStatus("Etapa de envio das informações.");
                     });
+
+                    await Task.Delay(2000); // Atraso de 2 segundos
 
                     // Após salvar o JSON
                     var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint

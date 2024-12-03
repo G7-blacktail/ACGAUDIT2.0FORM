@@ -9,7 +9,6 @@ public class Program
 {
     private string jsonFilePath => Path.Combine(configFolderPath, "config.json");
     private static string logFilePath => Path.Combine(configFolderPath, "log.txt");
-    private static string userInfoPath => Path.Combine(userDocsPath, ".proprieties", "UserInfo.txt");
     private static string configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config");
     private static string userDocsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
     private DateTime ultimaExecucao;
@@ -31,7 +30,6 @@ public class Program
     public Program()
     {
         ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg_form", "ACG_AUDIT.exe");
-        //ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Debug\net8.0-windows\ACG_AUDIT.exe";
     }
         public void Iniciar()
     {
@@ -102,7 +100,6 @@ public class Program
     private void ExecutarAcao()
     {
         Process.Start(ACG_HOME);
-        Console.ReadKey();
     }
 
     private DateTime CalcularProximaExecucao()
@@ -118,7 +115,6 @@ public class Program
         File.AppendAllText(logFilePath, "Programa iniciado pelo Agendador de Tarefas." + Environment.NewLine);
         string log = $"{DateTime.Now} | {(comparacao < ultimaExecucao ? "  Após o prazo " : "Dentro do prazo")} | {ultimaExecucao} | {proximaExecucao}";
         File.AppendAllText(logFilePath, log + Environment.NewLine);
-        Console.ReadKey();
     }
 
     private void CriarPastaConfig()
