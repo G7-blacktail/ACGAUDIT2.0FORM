@@ -15,7 +15,7 @@
 AppId={{052ABC35-45C1-4BA1-B8D6-65B3DFC2A35C}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={autopf}\ACG
 DisableDirPage=yes
@@ -40,8 +40,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
 [Files]
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg_form\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
+//Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg_form\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
+// Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\publish\win-x86\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\release\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
