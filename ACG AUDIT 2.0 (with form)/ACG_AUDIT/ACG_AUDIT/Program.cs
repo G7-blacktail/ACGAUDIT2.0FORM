@@ -27,6 +27,43 @@ namespace ACG_AUDIT
             TelaInicial loadingForm = new TelaInicial();
             loadingForm.Show();
 
+            // Variável para armazenar o conteúdo do config.json
+            string configContent = string.Empty;
+
+            // Caminho relativo para o arquivo de configuração
+            string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
+
+            // Ler o arquivo de configuração
+            if (File.Exists(configFilePath))
+            {
+                try
+                {
+                    // Ler o conteúdo do arquivo
+                    configContent = File.ReadAllText(configFilePath);
+
+                    // Limpar o conteúdo do arquivo
+                    File.WriteAllText(configFilePath, string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao ler ou limpar o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    loadingForm.Invoke((MethodInvoker)delegate
+                    {
+                        loadingForm.Close();
+                    });
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Arquivo de configuração não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                loadingForm.Invoke((MethodInvoker)delegate
+                {
+                    loadingForm.Close();
+                });
+                return;
+            }
+
             // Coletar e salvar informações do dispositivo e do sistema
             Task.Run(async () =>
             {
@@ -291,6 +328,22 @@ namespace ACG_AUDIT
                         {
                             loadingForm.UpdateStatus("Envio executado com sucesso.");
                         });
+
+                        try
+                        {
+                            if (string.IsNullOrEmpty(configContent))
+                            {
+                                MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else
+                            {
+                                File.WriteAllText(configFilePath, configContent);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Erro ao reescrever o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -327,11 +380,14 @@ namespace ACG_AUDIT
                 }
             });
 
+            // O restante do seu código permanece aqui...
+
             // Mantém a aplicação em execução
             Application.Run(loadingForm);
 
             // Finaliza a aplicação após o fechamento do formulário
             Application.Exit();
+
         }
 
         private static void CreateLogDirectories()
@@ -364,6 +420,5 @@ namespace ACG_AUDIT
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
         }
-
     }
 }
