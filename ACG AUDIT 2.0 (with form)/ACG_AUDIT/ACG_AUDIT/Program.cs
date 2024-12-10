@@ -41,12 +41,12 @@ namespace ACG_AUDIT
                     // Ler o conteúdo do arquivo
                     configContent = File.ReadAllText(configFilePath);
 
-                    // Limpar o conteúdo do arquivo
-                    File.WriteAllText(configFilePath, string.Empty);
+                    // Excluir o arquivo após ler o conteúdo
+                    File.Delete(configFilePath);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao ler ou limpar o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Erro ao ler ou excluir o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
                         loadingForm.Close();
@@ -200,7 +200,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações salvas em Program_info.json.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(5000); // Atraso de 2 segundos
 
                     // Solicitar ao usuário se deseja continuar
                     loadingForm.Invoke((MethodInvoker)async delegate
@@ -220,7 +220,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Abrindo o coletor avançado...");
                                 });
 
-                                await Task.Delay(2000);
+                                await Task.Delay(5000);
 
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
@@ -238,7 +238,7 @@ namespace ACG_AUDIT
                                         loadingForm.UpdateStatus("Coletor avançado finalizado.");
                                     });
 
-                                    await Task.Delay(2000);
+                                    await Task.Delay(5000);
 
                                 }
 
@@ -286,7 +286,7 @@ namespace ACG_AUDIT
                                         loadingForm.UpdateStatus("Arquivo de log não encontrado.");
                                     });
 
-                                    await Task.Delay(2000);
+                                    await Task.Delay(5000);
                                 
                                 }
                             }
@@ -297,7 +297,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Coletor avançado não encontrado.");
                                 });
 
-                                await Task.Delay(2000);
+                                await Task.Delay(5000);
                             }
                         }
                         else
@@ -307,14 +307,14 @@ namespace ACG_AUDIT
                         }
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(5000); // Atraso de 2 segundos
 
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
                         loadingForm.UpdateStatus("Etapa de envio das informações.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(5000); // Atraso de 2 segundos
 
                     // Após salvar o JSON
                     var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint
