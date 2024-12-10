@@ -220,7 +220,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Abrindo o coletor avançado...");
                                 });
 
-                                await Task.Delay(5000);
+                                await Task.Delay(150000);
 
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
@@ -297,7 +297,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Coletor avançado não encontrado.");
                                 });
 
-                                await Task.Delay(5000);
+                                await Task.Delay(2000);
                             }
                         }
                         else
@@ -307,7 +307,7 @@ namespace ACG_AUDIT
                         }
                     });
 
-                    await Task.Delay(5000); // Atraso de 2 segundos
+                    await Task.Delay(10000); // Atraso de 2 segundos
 
                     loadingForm.Invoke((MethodInvoker)delegate
                     {

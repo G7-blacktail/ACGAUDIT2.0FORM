@@ -9,7 +9,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Coletando informações...");
 
         // Coletar informações do BitLocker
         var bitLockerInfo = BitLockerInfo.CheckBitLockerStatusForAllDisks();
@@ -17,19 +16,24 @@ class Program
         // Coletar informações de políticas de auditoria
         var auditPolicyInfo = new AuditPolicyInfo("audit_policies.inf");
 
+        // Coletar informações do servidor NTP
+        string ntpServer = TimeInfo.GetTargetNtpServer();
+
         // Criar uma instância de AuditInfo
         var auditInfo = new AuditInfo
         {
             BitLocker = bitLockerInfo,
-            AuditPolicy = auditPolicyInfo.PolicyValues // Usar as políticas filtradas
+            AuditPolicy = auditPolicyInfo.PolicyValues, // Usar as políticas filtradas
+            NtpServer = ntpServer // Adiciona o servidor NTP ao objeto de auditoria
         };
 
-                    // Serializar AuditInfo em JSON com UTF-8
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
-            };
+        // Serializar AuditInfo em JSON com UTF-8
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
+        };
+
         // Serializar AuditInfo em JSON
         string json = JsonSerializer.Serialize(auditInfo, options);
 
@@ -39,7 +43,5 @@ class Program
 
         string filePath = Path.Combine(logDirectory, "audit_info.json");
         File.WriteAllText(filePath, json);
-
-        Console.WriteLine($"As informações foram salvas em {filePath}");
     }
 }
