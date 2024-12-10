@@ -220,7 +220,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Abrindo o coletor avançado...");
                                 });
 
-                                await Task.Delay(150000);
+                                await Task.Delay(50000);
 
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
@@ -228,6 +228,13 @@ namespace ACG_AUDIT
                                     UseShellExecute = true, // Necessário para execução com privilégios
                                     Verb = "runas" // Solicita privilégios administrativos
                                 };
+
+                                loadingForm.Invoke((MethodInvoker)delegate
+                                {
+                                    loadingForm.UpdateStatus("Executando...");
+                                });
+
+                                await Task.Delay(50000);
 
                                 Process process = Process.Start(startInfo);
                                 if (process != null)
@@ -241,6 +248,13 @@ namespace ACG_AUDIT
                                     await Task.Delay(5000);
 
                                 }
+
+                                loadingForm.Invoke((MethodInvoker)delegate
+                                {
+                                    loadingForm.UpdateStatus("continuando o processo de coleta...");
+                                });
+
+                                await Task.Delay(50000);
 
                                 // Ler o arquivo gerado no log e adicionar ao JSON
                                 string logFilePath = Path.Combine(@"C:\Logs\acg audit files", "audit_info.json"); // Caminho do arquivo gerado
