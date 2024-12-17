@@ -210,6 +210,7 @@ namespace ACG_AUDIT
                         {
                             // Executar o outro programa antes de finalizar
                             string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
+                            // string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\ACG AUDIT 2.0.exe";
 
                             if (File.Exists(executablePath))
                             {
@@ -220,7 +221,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Abrindo o coletor avançado...");
                                 });
 
-                                await Task.Delay(50000);
+                                await Task.Delay(5000);
 
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
@@ -234,7 +235,7 @@ namespace ACG_AUDIT
                                     loadingForm.UpdateStatus("Executando...");
                                 });
 
-                                await Task.Delay(50000);
+                                await Task.Delay(2000);
 
                                 Process process = Process.Start(startInfo);
                                 if (process != null)
@@ -245,16 +246,9 @@ namespace ACG_AUDIT
                                         loadingForm.UpdateStatus("Coletor avançado finalizado.");
                                     });
 
-                                    await Task.Delay(5000);
+                                    await Task.Delay(2000);
 
                                 }
-
-                                loadingForm.Invoke((MethodInvoker)delegate
-                                {
-                                    loadingForm.UpdateStatus("continuando o processo de coleta...");
-                                });
-
-                                await Task.Delay(50000);
 
                                 // Ler o arquivo gerado no log e adicionar ao JSON
                                 string logFilePath = Path.Combine(@"C:\Logs\acg audit files", "audit_info.json"); // Caminho do arquivo gerado
@@ -292,6 +286,13 @@ namespace ACG_AUDIT
                                         File.Delete(logFilePath);
                                     }
 
+                                    loadingForm.Invoke((MethodInvoker)delegate
+                                    {
+                                        loadingForm.UpdateStatus("continuando o processo de coleta...");
+                                    });
+
+                                    await Task.Delay(2000);
+
                                 }
                                 else
                                 {
@@ -300,7 +301,7 @@ namespace ACG_AUDIT
                                         loadingForm.UpdateStatus("Arquivo de log não encontrado.");
                                     });
 
-                                    await Task.Delay(5000);
+                                    await Task.Delay(2000);
                                 
                                 }
                             }
@@ -321,7 +322,7 @@ namespace ACG_AUDIT
                         }
                     });
 
-                    await Task.Delay(10000); // Atraso de 2 segundos
+                    await Task.Delay(20000); // Atraso de 2 segundos
 
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
@@ -331,7 +332,8 @@ namespace ACG_AUDIT
                     await Task.Delay(5000); // Atraso de 2 segundos
 
                     // Após salvar o JSON
-                    var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint
+                    // var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint
+                     var jsonSender = new JsonFileSenderService("http://localhost:18194/v1.0/pub/inventario/device-info");
                     bool envioBemSucedido = false; // Controle de estado
 
                     try
@@ -369,13 +371,12 @@ namespace ACG_AUDIT
                         {
                             loadingForm.Close();
                         });
-                        return; // Impede que o código continue após um erro
+                        return; 
                     }
 
-                    // Apenas aguarde o atraso se o envio foi bem-sucedido
                     if (envioBemSucedido)
                     {
-                        await Task.Delay(2000); // Atraso de 2 segundos
+                        await Task.Delay(2000); 
                     }
 
                     // Fechar a tela de carregamento no thread da interface do usuário
@@ -394,12 +395,8 @@ namespace ACG_AUDIT
                 }
             });
 
-            // O restante do seu código permanece aqui...
-
-            // Mantém a aplicação em execução
             Application.Run(loadingForm);
 
-            // Finaliza a aplicação após o fechamento do formulário
             Application.Exit();
 
         }

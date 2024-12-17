@@ -43,7 +43,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 //Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg_form\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
 // Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\publish\win-x86\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\release\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
