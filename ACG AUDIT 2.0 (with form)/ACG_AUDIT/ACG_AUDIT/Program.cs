@@ -78,7 +78,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações do dispositivo coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Coletar informações do sistema
                     SystemInfo systemInfo = SystemInfoService.CollectSystemInfo();
@@ -96,7 +96,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações dos softwares instalados coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Coletar informações dos grupos de administradores
                     AdminGroupInfo adminGroupInfo = AdminGroupService.CollectAdminGroupInfo();
@@ -114,7 +114,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações dos usuários e seus grupos coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Coletar informações dos perfis do firewall
                     FirewallProfileList firewallProfileList = FirewallService.GetFirewallProfiles();
@@ -123,7 +123,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações dos perfis do firewall coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Coletar informações do antivírus
                     AntivirusProductList antivirusProductList = AntivirusService.GetAntivirusInfo();
@@ -132,7 +132,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações do antivírus coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Coletar informações de acesso remoto
                     RemoteAccess remoteAccessInfo = RemoteAccessService.GetRemoteAccessInfo();
@@ -141,16 +141,15 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações de acesso remoto coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
-                    // Coletar informações de data e hora
                     TimeInfo timeInfo = TimeService.GetTimeInfo();
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
                         loadingForm.UpdateStatus("Informações de data e hora coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Coletar informações de proteção de tela
                     // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Substitua pelo caminho correto
@@ -161,7 +160,7 @@ namespace ACG_AUDIT
                         loadingForm.UpdateStatus("Informações de proteção de tela coletadas.");
                     });
 
-                    await Task.Delay(2000); // Atraso de 2 segundos
+                    await Task.Delay(2000);
 
                     // Criar um objeto que combine as informações do dispositivo e do sistema
                     var combinedInfo = new
@@ -187,20 +186,19 @@ namespace ACG_AUDIT
                         Directory.CreateDirectory(directoryPath);
                     }
 
-                    // Salvar informações em JSON com tratamento de caracteres acentuados
                     var options = new JsonSerializerOptions
                     {
                         WriteIndented = true,
-                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                     };
                     JsonFileService.SaveToJson(combinedInfo, jsonFilePath, options);
 
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
-                        loadingForm.UpdateStatus("Informações salvas em Program_info.json.");
+                        loadingForm.UpdateStatus("Informações salvas no arquivo básico, sem privilêgios avançados.");
                     });
 
-                    await Task.Delay(5000); // Atraso de 2 segundos
+                    await Task.Delay(5000);
 
                     // Solicitar ao usuário se deseja continuar
                     loadingForm.Invoke((MethodInvoker)async delegate
@@ -226,8 +224,8 @@ namespace ACG_AUDIT
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
                                     FileName = executablePath,
-                                    UseShellExecute = true, // Necessário para execução com privilégios
-                                    Verb = "runas" // Solicita privilégios administrativos
+                                    UseShellExecute = true,
+                                    Verb = "runas" 
                                 };
 
                                 loadingForm.Invoke((MethodInvoker)delegate
@@ -240,7 +238,7 @@ namespace ACG_AUDIT
                                 Process process = Process.Start(startInfo);
                                 if (process != null)
                                 {
-                                    process.WaitForExit(); // Aguardar a conclusão do processo
+                                    process.WaitForExit();
                                     loadingForm.Invoke((MethodInvoker)delegate
                                     {
                                         loadingForm.UpdateStatus("Coletor avançado finalizado.");
@@ -254,10 +252,8 @@ namespace ACG_AUDIT
                                 string logFilePath = Path.Combine(@"C:\Logs\acg audit files", "audit_info.json"); // Caminho do arquivo gerado
                                 if (File.Exists(logFilePath))
                                 {
-                                    // Ler o conteúdo do log
                                     string logContent = File.ReadAllText(logFilePath);
 
-                                    // Deserializar o conteúdo do log para um objeto
                                     var logInfo = JsonSerializer.Deserialize<Dictionary<string, object>>(logContent);
 
                                     var finalCombinedInfo = new
@@ -272,12 +268,11 @@ namespace ACG_AUDIT
                                         RemoteAccessInfo = remoteAccessInfo,
                                         TimeInfo = timeInfo,
                                         ScreenSaverSettings = screenSaverSettings,
-                                        LogInfo = logInfo // Adicionando o objeto deserializado
+                                        LogInfo = logInfo 
                                     };
                                     // Caminho para salvar o JSON final
                                     string finalJsonPath = Path.Combine(@"C:\Logs\acg audit files", "Program_info.json");
 
-                                    // Salvar o JSON final com tratamento de caracteres acentuados
                                     JsonFileService.SaveToJson(finalCombinedInfo, finalJsonPath, options);
 
                                     // Excluir o arquivo anterior, se existir
@@ -322,18 +317,18 @@ namespace ACG_AUDIT
                         }
                     });
 
-                    await Task.Delay(20000); // Atraso de 2 segundos
+                    await Task.Delay(20000);
 
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
                         loadingForm.UpdateStatus("Etapa de envio das informações.");
                     });
 
-                    await Task.Delay(5000); // Atraso de 2 segundos
+                    await Task.Delay(5000);
 
                     // Após salvar o JSON
                     // var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint
-                     var jsonSender = new JsonFileSenderService("http://localhost:18194/v1.0/pub/inventario/device-info");
+                    var jsonSender = new JsonFileSenderService("http://localhost:18194/api/v1.0/pub/inventario/device-info");
                     bool envioBemSucedido = false; // Controle de estado
 
                     try
@@ -344,6 +339,8 @@ namespace ACG_AUDIT
                         {
                             loadingForm.UpdateStatus("Envio executado com sucesso.");
                         });
+
+                        await Task.Delay(2000);
 
                         try
                         {
