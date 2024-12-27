@@ -206,9 +206,9 @@ namespace ACG_AUDIT
                         DialogResult result = ShowConfirmationDialog();
                         if (result == DialogResult.Yes)
                         {
-                            // Executar o outro programa antes de finalizar
-                            string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
-                            // string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\ACG AUDIT 2.0.exe";
+                            //// Executar o outro programa antes de finalizar
+                            //string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
+                            string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\ACG AUDIT 2.0.exe";
 
                             if (File.Exists(executablePath))
                             {

@@ -13,7 +13,7 @@ namespace ACG_AUDIT
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(650, 150);
+            this.Size = new Size(750, 150);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -22,7 +22,7 @@ namespace ACG_AUDIT
             progressBar = new ProgressBar
             {
                 Location = new Point(100, 50),
-                Size = new Size(450, 30),
+                Size = new Size(500, 30),
                 Style = ProgressBarStyle.Marquee // Estilo de carregamento em movimento
                 
             };
