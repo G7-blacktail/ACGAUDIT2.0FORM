@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using ACG_AUDIT.ClassCollections;
 using ACG_AUDIT.Services;
 using System.Text.Json;
+using System.ComponentModel;
 
 namespace ACG_AUDIT
 {
@@ -56,7 +57,7 @@ namespace ACG_AUDIT
             }
             else
             {
-                MessageBox.Show("Arquivo de configuração não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Arquivo de configuração não encontrado, por gentiliza, \n reinicie o computador para que o agendador exexute normalmente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 loadingForm.Invoke((MethodInvoker)delegate
                 {
                     loadingForm.Close();
@@ -152,8 +153,8 @@ namespace ACG_AUDIT
                     await Task.Delay(2000);
 
                     // Coletar informações de proteção de tela
-                    // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Substitua pelo caminho correto
-                    string filePath = @"C:\Windows\System32\GroupPolicy\User\Registry.pol";
+                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Substitua pelo caminho correto
+                    //string filePath = @"C:\Windows\System32\GroupPolicy\User\Registry.pol";
                     ScreenSaverSettings screenSaverSettings = ScreenSaverService.GetScreenSaverSettings(filePath);
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
@@ -206,14 +207,12 @@ namespace ACG_AUDIT
                         DialogResult result = ShowConfirmationDialog();
                         if (result == DialogResult.Yes)
                         {
-                            //// Executar o outro programa antes de finalizar
-                            //string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
+                            // Executar o outro programa antes de finalizar
+                            // string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
                             string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\ACG AUDIT 2.0.exe";
 
                             if (File.Exists(executablePath))
                             {
-                                
-
                                 loadingForm.Invoke((MethodInvoker)delegate
                                 {
                                     loadingForm.UpdateStatus("Abrindo o coletor avançado...");
@@ -225,7 +224,7 @@ namespace ACG_AUDIT
                                 {
                                     FileName = executablePath,
                                     UseShellExecute = true,
-                                    Verb = "runas" 
+                                    Verb = "runas" // Executar como administrador
                                 };
 
                                 loadingForm.Invoke((MethodInvoker)delegate
@@ -235,85 +234,51 @@ namespace ACG_AUDIT
 
                                 await Task.Delay(2000);
 
-                                Process process = Process.Start(startInfo);
-                                if (process != null)
+                                try
                                 {
-                                    process.WaitForExit();
-                                    loadingForm.Invoke((MethodInvoker)delegate
+                                    Process process = Process.Start(startInfo);
+                                    if (process != null)
                                     {
-                                        loadingForm.UpdateStatus("Coletor avançado finalizado.");
-                                    });
+                                        process.WaitForExit();
+                                        loadingForm.Invoke((MethodInvoker)delegate
+                                        {
+                                            loadingForm.UpdateStatus("Coletor avançado finalizado.");
+                                        });
 
-                                    await Task.Delay(2000);
-
-                                }
-
-                                // Ler o arquivo gerado no log e adicionar ao JSON
-                                string logFilePath = Path.Combine(@"C:\Logs\acg audit files", "audit_info.json"); // Caminho do arquivo gerado
-                                if (File.Exists(logFilePath))
-                                {
-                                    string logContent = File.ReadAllText(logFilePath);
-
-                                    var logInfo = JsonSerializer.Deserialize<Dictionary<string, object>>(logContent);
-
-                                    var finalCombinedInfo = new
-                                    {
-                                        DeviceInfo = deviceInfo,
-                                        SystemInfo = systemInfo,
-                                        InstalledSoftware = installedSoftwareList,
-                                        AdminGroupInfo = adminGroupInfo,
-                                        UserGroupInfo = userGroupList,
-                                        FirewallProfiles = firewallProfileList,
-                                        AntivirusProducts = antivirusProductList,
-                                        RemoteAccessInfo = remoteAccessInfo,
-                                        TimeInfo = timeInfo,
-                                        ScreenSaverSettings = screenSaverSettings,
-                                        LogInfo = logInfo 
-                                    };
-                                    // Caminho para salvar o JSON final
-                                    string finalJsonPath = Path.Combine(@"C:\Logs\acg audit files", "Program_info.json");
-
-                                    JsonFileService.SaveToJson(finalCombinedInfo, finalJsonPath, options);
-
-                                    // Excluir o arquivo anterior, se existir
-                                    if (File.Exists(logFilePath))
-                                    {
-                                        File.Delete(logFilePath);
+                                        await Task.Delay(2000);
                                     }
-
-                                    loadingForm.Invoke((MethodInvoker)delegate
-                                    {
-                                        loadingForm.UpdateStatus("continuando o processo de coleta...");
-                                    });
-
-                                    await Task.Delay(2000);
-
                                 }
-                                else
+                                catch (Win32Exception ex)
                                 {
+                                    // Tratar a exceção se o processo não puder ser iniciado
                                     loadingForm.Invoke((MethodInvoker)delegate
                                     {
-                                        loadingForm.UpdateStatus("Arquivo de log não encontrado.");
+                                        loadingForm.UpdateStatus($"Erro ao iniciar o coletor: {ex.Message}");
                                     });
-
-                                    await Task.Delay(2000);
-                                
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Tratar outras exceções
+                                    loadingForm.Invoke((MethodInvoker)delegate
+                                    {
+                                        loadingForm.UpdateStatus($"Ocorreu um erro inesperado: {ex.Message}");
+                                    });
                                 }
                             }
                             else
                             {
                                 loadingForm.Invoke((MethodInvoker)delegate
                                 {
-                                    loadingForm.UpdateStatus("Coletor avançado não encontrado.");
+                                    loadingForm.UpdateStatus("O executável não foi encontrado.");
                                 });
-
-                                await Task.Delay(2000);
                             }
                         }
                         else
                         {
-                            // Mostrar mensagem de aviso
-                            ShowWarningDialog();
+                            loadingForm.Invoke((MethodInvoker)delegate
+                            {
+                                loadingForm.UpdateStatus("Operação cancelada pelo usuário.");
+                            });
                         }
                     });
 

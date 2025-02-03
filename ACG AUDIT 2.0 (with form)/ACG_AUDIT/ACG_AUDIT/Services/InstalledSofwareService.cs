@@ -1,6 +1,7 @@
 ﻿using ACG_AUDIT.ClassCollections;
+using Microsoft.Win32;
 using System;
-using System.Management;
+using System.Collections.Generic;
 
 namespace ACG_AUDIT.Services
 {
@@ -10,24 +11,49 @@ namespace ACG_AUDIT.Services
         {
             InstalledSoftwareList installedSoftwareList = new InstalledSoftwareList();
 
-            try
+            // Verifica as chaves de registro para softwares instalados
+            string[] registryKeys = new string[]
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Product");
-                foreach (ManagementObject obj in searcher.Get())
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+            };
+
+            foreach (string key in registryKeys)
+            {
+                using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(key))
                 {
-                    InstalledSoftware software = new InstalledSoftware
+                    if (registryKey != null)
                     {
-                        Name = obj["Name"]?.ToString() ?? "Desconhecido",
-                        Version = obj["Version"]?.ToString() ?? "Desconhecido",
-                        Vendor = obj["Vendor"]?.ToString() ?? "Desconhecido"
-                    };
-                    installedSoftwareList.SoftwareList.Add(software);
+                        foreach (string subKeyName in registryKey.GetSubKeyNames())
+                        {
+                            using (RegistryKey subKey = registryKey.OpenSubKey(subKeyName))
+                            {
+                                if (subKey != null)
+                                {
+                                    string name = subKey.GetValue("DisplayName") as string;
+                                    string version = subKey.GetValue("DisplayVersion") as string;
+                                    string vendor = subKey.GetValue("Publisher") as string; // Coletando o fornecedor
+                
+
+                                    if (!string.IsNullOrEmpty(name))
+                                    {
+                                        InstalledSoftware software = new InstalledSoftware
+                                        {
+                                            Name = name,
+                                            Version = version ?? "Desconhecida",
+                                            Vendor = vendor ?? "Desconhecido",
+                                        };
+                                        installedSoftwareList.SoftwareList.Add(software);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro ao coletar informações dos softwares instalados: " + ex.Message);
-            }
+
+            // Ordena a lista de softwares em ordem alfabética pelo nome
+            installedSoftwareList.SoftwareList.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase));
 
             return installedSoftwareList;
         }
