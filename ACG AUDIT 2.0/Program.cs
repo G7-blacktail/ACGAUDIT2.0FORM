@@ -38,7 +38,7 @@ class Program
         string json = JsonSerializer.Serialize(auditInfo, options);
 
         // Definir o caminho para salvar o arquivo
-        string logDirectory = @"C:\Logs\acg audit files";
+        string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files");
         Directory.CreateDirectory(logDirectory); // Cria o diretório se não existir
 
         string filePath = Path.Combine(logDirectory, "audit_info.json");

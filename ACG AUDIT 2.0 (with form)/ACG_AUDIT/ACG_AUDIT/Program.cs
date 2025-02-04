@@ -14,6 +14,8 @@ namespace ACG_AUDIT
     {
         private static readonly string logsDirectory = @"C:\Logs\acg audit files";
         private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "Logs");
+        private static readonly string appdata = @"C:\Users\gustavo.fernandes\AppData\Roaming\ACG Audit";
+        private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
 
         [STAThread]
         static void Main()
@@ -178,7 +180,7 @@ namespace ACG_AUDIT
                         ScreenSaverSettings = screenSaverSettings
                     };
                     // Definir o caminho para salvar o JSON na pasta AppData do usuário
-                    string jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Program_info.json");
+                    string jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "Program_info.json");
 
                     // Criar diretório se não existir
                     string directoryPath = Path.GetDirectoryName(jsonFilePath);
@@ -209,7 +211,7 @@ namespace ACG_AUDIT
                         {
                             // Executar o outro programa antes de finalizar
                             // string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
-                            string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\ACG AUDIT 2.0.exe";
+                            string executablePath = @"c:\users\gustavo.fernandes\documents\lidersis\modelos\acg audit 2.0\bin\release\net8.0\publish\win-x86\ACG AUDIT 2.0.exe";
 
                             if (File.Exists(executablePath))
                             {
@@ -246,6 +248,37 @@ namespace ACG_AUDIT
                                         });
 
                                         await Task.Delay(2000);
+                                    }
+
+                                    string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
+                                    if (File.Exists(systemLogPath))
+                                    {
+                                        string logContent = File.ReadAllText(systemLogPath);
+                                        var logInfo = JsonSerializer.Deserialize<Dictionary<string, object>>(logContent);
+
+                                        var finalCombinedInfo = new
+                                        {
+                                            DeviceInfo = deviceInfo,
+                                            SystemInfo = systemInfo,
+                                            InstalledSoftware = installedSoftwareList,
+                                            AdminGroupInfo = adminGroupInfo,
+                                            UserGroupInfo = userGroupList,
+                                            FirewallProfiles = firewallProfileList,
+                                            AntivirusProducts = antivirusProductList,
+                                            RemoteAccessInfo = remoteAccessInfo,
+                                            TimeInfo = timeInfo,
+                                            ScreenSaverSettings = screenSaverSettings,
+                                            LogInfo = logInfo
+                                        };
+                                        //caminho final do arquivo
+                                        string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
+
+                                        JsonFileService.SaveToJson(finalCombinedInfo, finalJsonPath, options);
+                                        if (File.Exists(finalJsonPath) && File.Exists(jsonFilePath))
+                                        {
+                                            File.Delete(systemLogPath);
+                                            File.Delete(jsonFilePath);
+                                        }
                                     }
                                 }
                                 catch (Win32Exception ex)
@@ -298,7 +331,7 @@ namespace ACG_AUDIT
 
                     try
                     {
-                        await jsonSender.SendJsonFileAsync(Path.Combine(logsDirectory, "Program_info.json"));
+                        await jsonSender.SendJsonFileAsync(Path.Combine(appdata, "Inventario.json"));
                         envioBemSucedido = true; // Marca como bem-sucedido se não houver exceções
                         loadingForm.Invoke((MethodInvoker)delegate
                         {
