@@ -308,10 +308,13 @@ namespace ACG_AUDIT
                         }
                         else
                         {
+                            ShowWarningDialog();
                             loadingForm.Invoke((MethodInvoker)delegate
                             {
                                 loadingForm.UpdateStatus("Operação cancelada pelo usuário.");
                             });
+
+                            await Task.Delay(2000);
                         }
                     });
 
