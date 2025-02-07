@@ -16,6 +16,7 @@ namespace ACG_AUDIT
         private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "Logs");
         private static readonly string appdata = @"C:\Users\gustavo.fernandes\AppData\Roaming\ACG Audit";
         private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
+        private static readonly int timeDelay = 2000;
 
         [STAThread]
         static void Main()
@@ -67,106 +68,59 @@ namespace ACG_AUDIT
                 return;
             }
 
+            // START //
+
             // Coletar e salvar informações do dispositivo e do sistema
             Task.Run(async () =>
             {
                 try
                 {
-                    await Task.Delay(2000);
 
                     // Coletar informações do dispositivo
+                    await UpdateStatusWithDelay("Coletando informações do dispositivo", timeDelay, loadingForm);
                     DeviceInfo deviceInfo = DeviceInfoCollector.CollectDeviceInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações do dispositivo coletadas.");
-                    });
-
-                    await Task.Delay(2000);
 
                     // Coletar informações do sistema
                     SystemInfo systemInfo = SystemInfoService.CollectSystemInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações do sistema coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações do sistema coletadas", timeDelay, loadingForm);
 
                     // Coletar informações dos softwares instalados
                     InstalledSoftwareList installedSoftwareList = InstalledSoftwareService.CollectInstalledSoftware();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações dos softwares instalados coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações dos softwares instalados coletadas", timeDelay, loadingForm);
 
                     // Coletar informações dos grupos de administradores
                     AdminGroupInfo adminGroupInfo = AdminGroupService.CollectAdminGroupInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações do Grupo de administradores Coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações do Grupo de administradores Coletadas", timeDelay, loadingForm);
 
                     // Coletar informações dos usuários e seus grupos
                     UserGroupList userGroupList = UserGroupService.CollectUserGroupInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações dos usuários e seus grupos coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações dos usuários e seus grupos coletadas", timeDelay, loadingForm);
 
                     // Coletar informações dos perfis do firewall
                     FirewallProfileList firewallProfileList = FirewallService.GetFirewallProfiles();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações dos perfis do firewall coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações dos perfis do firewall coletadas", timeDelay, loadingForm);
 
                     // Coletar informações do antivírus
                     AntivirusProductList antivirusProductList = AntivirusService.GetAntivirusInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações do antivírus coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações do antivírus coletadas", timeDelay, loadingForm);
 
                     // Coletar informações de acesso remoto
                     RemoteAccess remoteAccessInfo = RemoteAccessService.GetRemoteAccessInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações de acesso remoto coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações de acesso remoto coletadas", timeDelay, loadingForm);
 
                     TimeInfo timeInfo = TimeService.GetTimeInfo();
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações de data e hora coletadas.");
-                    });
-
-                    await Task.Delay(2000);
+                    await UpdateStatusWithDelay("Informações de data e hora coletadas", timeDelay, loadingForm);
 
                     // Coletar informações de proteção de tela
-                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Substitua pelo caminho correto
-                    //string filePath = @"C:\Windows\System32\GroupPolicy\User\Registry.pol";
-                    ScreenSaverSettings screenSaverSettings = ScreenSaverService.GetScreenSaverSettings(filePath);
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações de proteção de tela coletadas.");
-                    });
+                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Caminho relativo ao dispositivo consultado
+                    //string filePath = @"C:\Windows\System32\GroupPolicy\User\Registry.pol"; // caminho absoluto na minha maquina
 
-                    await Task.Delay(2000);
+                    ScreenSaverSettings screenSaverSettings = ScreenSaverService.GetScreenSaverSettings(filePath);
+                    await UpdateStatusWithDelay("Informações de proteção de tela coletadas", timeDelay, loadingForm);
+                    // END //
 
                     // Criar um objeto que combine as informações do dispositivo e do sistema
-                    var combinedInfo = new
+                    var collectedData = new
                     {
                         DeviceInfo = deviceInfo,
                         SystemInfo = systemInfo,
@@ -179,29 +133,10 @@ namespace ACG_AUDIT
                         TimeInfo = timeInfo,
                         ScreenSaverSettings = screenSaverSettings
                     };
-                    // Definir o caminho para salvar o JSON na pasta AppData do usuário
-                    string jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "Program_info.json");
 
-                    // Criar diretório se não existir
-                    string directoryPath = Path.GetDirectoryName(jsonFilePath);
-                    if (!Directory.Exists(directoryPath))
-                    {
-                        Directory.CreateDirectory(directoryPath);
-                    }
-
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                    };
-                    JsonFileService.SaveToJson(combinedInfo, jsonFilePath, options);
-
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Informações salvas no arquivo básico, sem privilêgios avançados.");
-                    });
-
-                    await Task.Delay(5000);
+                    // Definir caminhos para os arquivos JSON
+                    string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
+                    string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
 
                     // Solicitar ao usuário se deseja continuar
                     loadingForm.Invoke((MethodInvoker)async delegate
@@ -210,17 +145,11 @@ namespace ACG_AUDIT
                         if (result == DialogResult.Yes)
                         {
                             // Executar o outro programa antes de finalizar
-                            // string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
                             string executablePath = @"c:\users\gustavo.fernandes\documents\lidersis\modelos\acg audit 2.0\bin\release\net8.0\publish\win-x86\ACG AUDIT 2.0.exe";
 
                             if (File.Exists(executablePath))
                             {
-                                loadingForm.Invoke((MethodInvoker)delegate
-                                {
-                                    loadingForm.UpdateStatus("Abrindo o coletor avançado...");
-                                });
-
-                                await Task.Delay(5000);
+                                await UpdateStatusWithDelay("Abrindo o coletor avançado...", 5000, loadingForm);
 
                                 ProcessStartInfo startInfo = new ProcessStartInfo
                                 {
@@ -229,12 +158,7 @@ namespace ACG_AUDIT
                                     Verb = "runas" // Executar como administrador
                                 };
 
-                                loadingForm.Invoke((MethodInvoker)delegate
-                                {
-                                    loadingForm.UpdateStatus("Executando...");
-                                });
-
-                                await Task.Delay(2000);
+                                await UpdateStatusWithDelay("Executando...", timeDelay, loadingForm);
 
                                 try
                                 {
@@ -242,142 +166,80 @@ namespace ACG_AUDIT
                                     if (process != null)
                                     {
                                         process.WaitForExit();
-                                        loadingForm.Invoke((MethodInvoker)delegate
-                                        {
-                                            loadingForm.UpdateStatus("Coletor avançado finalizado.");
-                                        });
-
-                                        await Task.Delay(2000);
+                                        await UpdateStatusWithDelay("Coletor avançado finalizado", timeDelay, loadingForm);
                                     }
 
-                                    string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
+                                    // Verificar se o audit_info.json foi gerado
                                     if (File.Exists(systemLogPath))
                                     {
-                                        string logContent = File.ReadAllText(systemLogPath);
-                                        var logInfo = JsonSerializer.Deserialize<Dictionary<string, object>>(logContent);
-
-                                        var finalCombinedInfo = new
-                                        {
-                                            DeviceInfo = deviceInfo,
-                                            SystemInfo = systemInfo,
-                                            InstalledSoftware = installedSoftwareList,
-                                            AdminGroupInfo = adminGroupInfo,
-                                            UserGroupInfo = userGroupList,
-                                            FirewallProfiles = firewallProfileList,
-                                            AntivirusProducts = antivirusProductList,
-                                            RemoteAccessInfo = remoteAccessInfo,
-                                            TimeInfo = timeInfo,
-                                            ScreenSaverSettings = screenSaverSettings,
-                                            LogInfo = logInfo
-                                        };
-                                        //caminho final do arquivo
-                                        string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
-
-                                        JsonFileService.SaveToJson(finalCombinedInfo, finalJsonPath, options);
-                                        if (File.Exists(finalJsonPath) && File.Exists(jsonFilePath))
-                                        {
-                                            File.Delete(systemLogPath);
-                                            File.Delete(jsonFilePath);
-                                        }
+                                        // Criar o Inventario.json com os dados da primeira e segunda etapas
+                                        await JsonCreator.CreateInventoryJson(collectedData, finalJsonPath, systemLogPath, null);
+                                    }
+                                    else
+                                    {
+                                        // Criar o Inventario.json apenas com os dados da primeira etapa
+                                        await JsonCreator.CreateInventoryJson(collectedData, finalJsonPath, null, null);
                                     }
                                 }
                                 catch (Win32Exception ex)
                                 {
-                                    // Tratar a exceção se o processo não puder ser iniciado
-                                    loadingForm.Invoke((MethodInvoker)delegate
-                                    {
-                                        loadingForm.UpdateStatus($"Erro ao iniciar o coletor: {ex.Message}");
-                                    });
+                                    await UpdateStatusWithDelay($"Erro ao iniciar o coletor: {ex.Message}", timeDelay, loadingForm);
                                 }
                                 catch (Exception ex)
                                 {
-                                    // Tratar outras exceções
-                                    loadingForm.Invoke((MethodInvoker)delegate
-                                    {
-                                        loadingForm.UpdateStatus($"Ocorreu um erro inesperado: {ex.Message}");
-                                    });
+                                    await UpdateStatusWithDelay($"Ocorreu um erro inesperado: {ex.Message}", timeDelay, loadingForm);
                                 }
                             }
                             else
                             {
-                                loadingForm.Invoke((MethodInvoker)delegate
-                                {
-                                    loadingForm.UpdateStatus("O executável não foi encontrado.");
-                                });
+                                await UpdateStatusWithDelay("O executável não foi encontrado.", timeDelay, loadingForm);
                             }
                         }
                         else
                         {
                             ShowWarningDialog();
-                            loadingForm.Invoke((MethodInvoker)delegate
-                            {
-                                loadingForm.UpdateStatus("Operação cancelada pelo usuário.");
-                            });
-
-                            await Task.Delay(2000);
+                            await UpdateStatusWithDelay("Operação cancelada pelo usuário.", timeDelay, loadingForm);
                         }
                     });
 
                     await Task.Delay(20000);
 
-                    loadingForm.Invoke((MethodInvoker)delegate
-                    {
-                        loadingForm.UpdateStatus("Etapa de envio das informações.");
-                    });
+                    await UpdateStatusWithDelay("Etapa de envio das informações.", 5000, loadingForm);
 
-                    await Task.Delay(5000);
-
-                    // Após salvar o JSON
-                    // var jsonSender = new JsonFileSenderService("http://localhost:3000/data"); // Substitua pelo seu endpoint
+                    // Envio do Inventario.json
                     var jsonSender = new JsonFileSenderService("http://localhost:18194/api/v1.0/pub/inventario/device-info");
                     bool envioBemSucedido = false; // Controle de estado
 
                     try
                     {
-                        await jsonSender.SendJsonFileAsync(Path.Combine(appdata, "Inventario.json"));
+                        await jsonSender.SendJsonFileAsync(finalJsonPath);
                         envioBemSucedido = true; // Marca como bem-sucedido se não houver exceções
-                        loadingForm.Invoke((MethodInvoker)delegate
-                        {
-                            loadingForm.UpdateStatus("Envio executado com sucesso.");
-                        });
+                        await UpdateStatusWithDelay("Envio executado com sucesso.", timeDelay, loadingForm);
 
-                        await Task.Delay(2000);
-
-                        try
+                        if (string.IsNullOrEmpty(configContent))
                         {
-                            if (string.IsNullOrEmpty(configContent))
-                            {
-                                MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                File.WriteAllText(configFilePath, configContent);
-                            }
+                            MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show($"Erro ao reescrever o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            File.WriteAllText(configFilePath, configContent);
                         }
                     }
                     catch (Exception ex)
                     {
-                        // Exibe uma caixa de mensagem com o erro
                         MessageBox.Show($"Falha ao enviar as informações: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        // Fechar a tela de carregamento no thread da interface do usuário
                         loadingForm.Invoke((MethodInvoker)delegate
                         {
                             loadingForm.Close();
                         });
-                        return; 
+                        return;
                     }
 
                     if (envioBemSucedido)
                     {
-                        await Task.Delay(2000); 
+                        await Task.Delay(2000);
                     }
 
-                    // Fechar a tela de carregamento no thread da interface do usuário
                     loadingForm.Invoke((MethodInvoker)delegate
                     {
                         loadingForm.Close();
@@ -392,11 +254,6 @@ namespace ACG_AUDIT
                     });
                 }
             });
-
-            Application.Run(loadingForm);
-
-            Application.Exit();
-
         }
 
         private static void CreateLogDirectories()
@@ -405,29 +262,29 @@ namespace ACG_AUDIT
             {
                 Directory.CreateDirectory(logsDirectory);
             }
-
             if (!Directory.Exists(logsSubDirectory))
             {
                 Directory.CreateDirectory(logsSubDirectory);
             }
         }
 
+        private static async Task UpdateStatusWithDelay(string message, int delay, TelaInicial loadingForm)
+        {
+            loadingForm.Invoke((MethodInvoker)delegate
+            {
+                loadingForm.UpdateStatus(message);
+            });
+            await Task.Delay(delay);
+        }
+
         private static DialogResult ShowConfirmationDialog()
         {
-            return MessageBox.Show(
-                "Deseja continuar e executar o coletor avançado? Algumas informações críticas só serão coletadas com esta etapa.",
-                "Coletor Avançado",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            return MessageBox.Show("Deseja continuar com a execução?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         }
 
         private static void ShowWarningDialog()
         {
-            MessageBox.Show(
-                "Ao não realizar a coleta completa algumas informações do comodato importantes não estarão no relatório do inventário. Caso não seja administrador do sistema, entre em contato com ele ou conosco para coletar as informações completas e evitar bloqueio no sistema.",
-                "Aviso Importante",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
+            MessageBox.Show("A operação foi cancelada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

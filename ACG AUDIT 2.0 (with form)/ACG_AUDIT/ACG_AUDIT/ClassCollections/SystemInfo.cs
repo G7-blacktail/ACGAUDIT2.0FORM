@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ACG_AUDIT.ClassCollections
 {
-    internal class SystemInfo
+    public class SystemInfo
     {
         public string? HostName { get; set; }
         public string? OperatingSystem { get; set; }

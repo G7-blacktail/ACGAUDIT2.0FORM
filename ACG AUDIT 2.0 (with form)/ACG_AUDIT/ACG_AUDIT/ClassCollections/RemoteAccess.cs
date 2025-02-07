@@ -1,6 +1,6 @@
 ﻿namespace ACG_AUDIT.ClassCollections
 {
-    internal class RemoteAccess
+    public class RemoteAccess
     {
         public string RemoteAssistance { get; set; }
         public string RemoteDesktop { get; set; }

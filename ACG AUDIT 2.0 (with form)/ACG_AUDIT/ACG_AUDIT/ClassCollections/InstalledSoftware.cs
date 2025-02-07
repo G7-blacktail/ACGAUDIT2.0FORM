@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ACG_AUDIT.ClassCollections
 {
-    internal class InstalledSoftware
+    public class InstalledSoftware
     {
         public string? Name { get; set; }
         public string? Version { get; set; }
         public string? Vendor { get; set; }
 
     }
-    internal class InstalledSoftwareList
+    public class InstalledSoftwareList
     {
         public List<InstalledSoftware> SoftwareList { get; set; } = new List<InstalledSoftware>();
     }

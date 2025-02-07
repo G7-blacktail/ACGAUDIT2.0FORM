@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ACG_AUDIT.ClassCollections
 {
-    internal class AdminGroupInfo
+    public class AdminGroupInfo
     {
         public List<string> LocalAdmins { get; set; } = new List<string>();
         public List<string> DomainAdmins { get; set; } = new List<string>();
