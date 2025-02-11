@@ -86,7 +86,7 @@ public class JsonFileSenderService
                 }
                 catch (SystemException ex)
                 {
-                    Log.Error(ex, "Erro no sistema operacional. Por favor, verifique o estado do sistema.");
+                    Log.Error(ex, "Erro no sistema operacional. Por favor, verifique o estado do sistema: {MensagemErro}", ex.Message);
                     throw new InvalidOperationException("Erro no sistema operacional. Por favor, verifique o estado do sistema.");
                 }
                 catch (Exception ex)
