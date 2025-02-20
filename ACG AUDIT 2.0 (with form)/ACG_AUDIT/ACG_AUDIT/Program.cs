@@ -27,8 +27,12 @@ namespace ACG_AUDIT
         //private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
         //private static readonly string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
         //private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "acg audit files");
-        // private static readonly string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
-        // string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "lib", "Subsystem", "Agendador.exe");
+        //private static readonly string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
+        //private static readonly string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "lib", "Subsystem", "Agendador.exe");
+        //private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
+        //private static readonly string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
+        //private static readonly string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
+        //private static readonly int timeDelay = 2000;
 
         [STAThread]
         static void Main()
@@ -149,7 +153,7 @@ namespace ACG_AUDIT
                     };
 
 
-                    await JsonCreator.CreateInventoryJson(collectedData, finalJsonPath, null, null);
+                    await JsonCreator.CreateInitialInventoryJson(collectedData, finalJsonPath, null);
                     // Definir o caminho para salvar o JSON na pasta AppData do usuário
 
                     // Solicitar ao usuário se deseja continuar
@@ -183,12 +187,12 @@ namespace ACG_AUDIT
                                         if (File.Exists(systemLogPath))
                                         {
                                             // Criar o Inventario.json com os dados da primeira e segunda etapas
-                                            await JsonCreator.CreateInventoryJson(collectedData, finalJsonPath, systemLogPath, null);
+                                            await JsonCreator.UpdateInventoryWithLogInfo(collectedData, finalJsonPath, systemLogPath);
                                         }
                                         else
                                         {
                                             // Criar o Inventario.json apenas com os dados da primeira etapa
-                                            await JsonCreator.CreateInventoryJson(collectedData, finalJsonPath, null, null);
+                                            await JsonCreator.CreateInitialInventoryJson(collectedData, finalJsonPath, null);
                                         }
                                     }
                                 }
@@ -224,6 +228,7 @@ namespace ACG_AUDIT
                     await UpdateStatusWithDelay("Etapa de envio das informações.", timeDelay * 2, loadingForm);
 
                     // Após salvar o JSON
+                    //var jsonSender = new JsonFileSenderService("https://acgdev.certificadoranacional.com/api/v1.0/pub/inventario/device-info");
                     var jsonSender = new JsonFileSenderService("http://localhost:18194/api/v1.0/pub/inventario/device-info");
                     bool envioBemSucedido = false; // Controle de estado
 

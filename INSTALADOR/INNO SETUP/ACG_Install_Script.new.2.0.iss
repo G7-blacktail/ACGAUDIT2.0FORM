@@ -33,7 +33,38 @@ SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=admin
 
+[Code]
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  AppDataPath, DocumentsPath, LogsPath, InstallPath, AgendadorPath: string;
+  ErrorCode: Integer;
+begin
+  AppDataPath := ExpandConstant('{userappdata}\ACG Audit');
+  DocumentsPath := ExpandConstant('{userdocs}\.proprieties');
+  LogsPath := 'C:\Logs';
+  InstallPath := ExpandConstant('{app}');
+  AgendadorPath := ExpandConstant('{app}\lib\SubSystem\Agendador.exe');
 
+  if CurUninstallStep = usUninstall then
+  begin
+    if FileExists(AgendadorPath) then
+    begin
+      ShellExec('', 'taskkill', '/F /IM Agendador.exe', '', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
+    end;
+  end;
+
+  if CurUninstallStep = usPostUninstall then
+  begin
+    if DirExists(AppDataPath) then
+      DelTree(AppDataPath, True, True, True);
+    if DirExists(DocumentsPath) then
+      DelTree(DocumentsPath, True, True, True);
+    if DirExists(LogsPath) then
+      DelTree(LogsPath, True, True, True);
+    if DirExists(InstallPath) then
+      DelTree(InstallPath, True, True, True);
+  end;
+end;
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -43,7 +74,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 //Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg_form\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
 // Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\win-x86\publish\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\publish\win-x86\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
 Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\release\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

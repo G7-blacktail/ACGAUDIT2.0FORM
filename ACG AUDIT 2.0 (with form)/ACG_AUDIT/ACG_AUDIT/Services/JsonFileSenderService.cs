@@ -55,6 +55,13 @@ public class JsonFileSenderService
         using (HttpClient client = new HttpClient())
         {
             string jsonContent = await File.ReadAllTextAsync(filePath);
+            if (string.IsNullOrWhiteSpace(jsonContent))
+            {
+                Log.Error("Erro: O JSON gerado está vazio ou nulo.");
+                throw new InvalidOperationException("Erro: O JSON gerado está vazio ou nulo.");
+            }
+
+            Log.Information($"JSON a ser enviado: {jsonContent}");
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             for (int i = 0; i < _maxRetries; i++)

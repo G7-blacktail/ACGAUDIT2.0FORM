@@ -29,8 +29,8 @@ public class Program
 
     public Program()
     {
-        // ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg_form", "ACG_AUDIT.exe");
-        ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\ACG_AUDIT.exe";
+        ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg_form", "ACG_AUDIT.exe");
+        //ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\ACG_AUDIT.exe";
     }
         public void Iniciar()
     {
