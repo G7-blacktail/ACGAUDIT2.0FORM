@@ -61,7 +61,7 @@ public class JsonFileSenderService
                 throw new InvalidOperationException("Erro: O JSON gerado está vazio ou nulo.");
             }
 
-            Log.Information($"JSON a ser enviado: {jsonContent}");
+            //Log.Information($"JSON a ser enviado: {jsonContent}");
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             for (int i = 0; i < _maxRetries; i++)

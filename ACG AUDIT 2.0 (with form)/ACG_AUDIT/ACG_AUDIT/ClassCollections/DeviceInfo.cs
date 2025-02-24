@@ -11,5 +11,6 @@ namespace ACG_AUDIT.ClassCollections
     {
         public string UUID { get; set; }
         public string SerialNumber { get; set; }
+        public string UUIDACG { get; set; }
     }
 }
