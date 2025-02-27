@@ -25,9 +25,9 @@ DefaultGroupName=ACG
 AllowNoIcons=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\Output
+OutputDir=C:\Users\Gusta\Documents\Lidersis\ACGAUDIT2.0FORM\INSTALADOR\INNO SETUP\Output
 OutputBaseFilename=ACG_Setup
-SetupIconFile=C:\Users\gustavo.fernandes\Documents\Lidersis\Lidersis\IMG\favicon.ico
+SetupIconFile=C:\Users\Gusta\Documents\Lidersis\ACGAUDIT2.0FORM\INSTALADOR\INNO SETUP\release\favicon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -72,10 +72,10 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 
 [Files]
 //Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg_form\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\Gusta\Documents\Lidersis\ACGAUDIT2.0FORM\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\*"; DestDir: "{app}\acg_form"; Flags: ignoreversion recursesubdirs
 // Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\executaveis\acg\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\publish\win-x86\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
-Source: "C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\INSTALADOR\INNO SETUP\release\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Gusta\Documents\Lidersis\ACGAUDIT2.0FORM\ACG AUDIT 2.0\bin\Release\*"; DestDir: "{app}\acg"; Flags: ignoreversion recursesubdirs
+Source: "C:\Users\Gusta\Documents\Lidersis\ACGAUDIT2.0FORM\INSTALADOR\INNO SETUP\release\*"; DestDir: "{app}\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

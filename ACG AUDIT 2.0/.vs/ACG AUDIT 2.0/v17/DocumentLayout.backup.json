@@ -1,14 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\Modelos\\ACG AUDIT 2.0\\",
+  "WorkspaceRootPath": "C:\\Users\\Gusta\\Documents\\Lidersis\\ACGAUDIT2.0FORM\\ACG AUDIT 2.0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3F1B938B-75AF-4094-93E4-FEC23FA482D0}|ACG AUDIT 2.0.csproj|c:\\users\\gustavo.fernandes\\documents\\lidersis\\modelos\\acg audit 2.0\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3F1B938B-75AF-4094-93E4-FEC23FA482D0}|ACG AUDIT 2.0.csproj|c:\\users\\gusta\\documents\\lidersis\\acgaudit2.0form\\acg audit 2.0\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3F1B938B-75AF-4094-93E4-FEC23FA482D0}|ACG AUDIT 2.0.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F1B938B-75AF-4094-93E4-FEC23FA482D0}|ACG AUDIT 2.0.csproj|c:\\users\\gustavo.fernandes\\documents\\lidersis\\modelos\\acg audit 2.0\\services\\regcollector\\auditpolicyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F1B938B-75AF-4094-93E4-FEC23FA482D0}|ACG AUDIT 2.0.csproj|solutionrelative:services\\regcollector\\auditpolicyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,31 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuditPolicyInfo.cs",
-              "DocumentMoniker": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\Modelos\\ACG AUDIT 2.0\\Services\\RegCollector\\AuditPolicyInfo.cs",
-              "RelativeDocumentMoniker": "Services\\RegCollector\\AuditPolicyInfo.cs",
-              "ToolTip": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\Modelos\\ACG AUDIT 2.0\\Services\\RegCollector\\AuditPolicyInfo.cs",
-              "RelativeToolTip": "Services\\RegCollector\\AuditPolicyInfo.cs",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAmwA0AAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-02T12:15:11.717Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\Modelos\\ACG AUDIT 2.0\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\Gusta\\Documents\\Lidersis\\ACGAUDIT2.0FORM\\ACG AUDIT 2.0\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\gustavo.fernandes\\Documents\\Lidersis\\Modelos\\ACG AUDIT 2.0\\Program.cs",
+              "ToolTip": "C:\\Users\\Gusta\\Documents\\Lidersis\\ACGAUDIT2.0FORM\\ACG AUDIT 2.0\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-02T12:12:29.494Z",
+              "WhenOpened": "2025-02-27T21:44:23.307Z",
               "EditorCaption": ""
             }
           ]

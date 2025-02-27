@@ -26,21 +26,34 @@ namespace ACG_AUDIT.Services
                     deviceInfo.SerialNumber = share["SerialNumber"]?.ToString() ?? string.Empty;
                 }
 
-                // Ler o arquivo TXT para obter o hash
                 string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files");
-                string filePath = Path.Combine(appDataPath, "etiqueta.txt");
-                if (File.Exists(filePath))
+                string filePath = Path.Combine(appDataPath, "Etiqueta.txt");
+
+                try
                 {
-                    string[] lines = File.ReadAllLines(filePath);
-                    if (lines.Length >= 2)
+                    if (File.Exists(filePath))
                     {
-                        // A segunda linha contém o hash
-                        deviceInfo.UUIDACG = lines[1]; // Adiciona o hash ao objeto DeviceInfo
+                        string[] lines = File.ReadAllLines(filePath);
+                        if (lines.Length > 0) // Considera a primeira linha como o UUIDACG
+                        {
+                            deviceInfo.UUIDACG = lines[0].Trim(); // Garante que não haja espaços extras
+                        }
+                        else
+                        {
+                            Console.WriteLine("Arquivo de etiqueta está vazio.");
+                            deviceInfo.UUIDACG = string.Empty; // Define um valor padrão
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Arquivo de etiqueta não foi encontrado.");
+                        deviceInfo.UUIDACG = string.Empty; // Define um valor padrão
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Arquivo de etiqueta não foi encontrado.");
+                    Console.WriteLine($"Erro ao ler o arquivo de etiqueta: {ex.Message}");
+                    deviceInfo.UUIDACG = string.Empty; // Garante que o campo esteja presente no JSON
                 }
             }
             catch (Exception ex)
