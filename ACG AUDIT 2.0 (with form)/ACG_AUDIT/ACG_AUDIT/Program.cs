@@ -12,27 +12,27 @@ namespace ACG_AUDIT
 {
     internal static class Program
     {
-        private static readonly string logsDirectory = @"C:\Logs\acg audit files";
-        private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "Logs");
-        private static readonly string appdata = @"C:\Users\gustavo.fernandes\AppData\Roaming\ACG Audit";
-        private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
-        private static readonly int timeDelay = 2000;
-        private static readonly string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
-        private static readonly string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
-        private static readonly string agendadorPath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\Sub-system-ACG\teste_codigo_csharp\bin\Release\net7.0\publish\win-x86\Agendador.exe";
-        private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
-        private static readonly string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\publish\win-x86\ACG AUDIT 2.0.exe";
-
-        //private static readonly string appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit");
+        //private static readonly string logsDirectory = @"C:\Logs\acg audit files";
+        //private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "Logs");
+        //private static readonly string appdata = @"C:\Users\gustavo.fernandes\AppData\Roaming\ACG Audit";
         //private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
-        //private static readonly string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-        //private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "acg audit files");
-        //private static readonly string executablePath = @"C:\Program Files (x86)\ACG\acg\ACG AUDIT 2.0.exe";
-        //private static readonly string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "lib", "Subsystem", "Agendador.exe");
-        //private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
+        //private static readonly int timeDelay = 2000;
         //private static readonly string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
         //private static readonly string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
-        //private static readonly int timeDelay = 2000;
+        //private static readonly string agendadorPath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\Sub-system-ACG\teste_codigo_csharp\bin\Release\net7.0\publish\win-x86\Agendador.exe";
+        //private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
+        //private static readonly string executablePath = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0\bin\Release\net8.0\publish\win-x86\ACG AUDIT 2.0.exe";
+
+        private static readonly string appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit");
+        private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
+        private static readonly string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+        private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "acg audit files");
+        private static readonly string executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg", "ACG AUDIT 2.0.exe");
+        private static readonly string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "lib", "Subsystem", "Agendador.exe");
+        private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
+        private static readonly string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
+        private static readonly string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
+        private static readonly int timeDelay = 2000;
 
         [STAThread]
         static void Main()
@@ -228,8 +228,8 @@ namespace ACG_AUDIT
                     await UpdateStatusWithDelay("Etapa de envio das informações.", timeDelay * 2, loadingForm);
 
                     // Após salvar o JSON
-                    //var jsonSender = new JsonFileSenderService("https://acgdev.certificadoranacional.com/api/v1.0/pub/inventario/device-info");
-                    var jsonSender = new JsonFileSenderService("http://localhost:18194/api/v1.0/pub/inventario/device-info");
+                    var jsonSender = new JsonFileSenderService("https://acgdev.certificadoranacional.com/api/v1.0/pub/inventario/device-info");
+                    //var jsonSender = new JsonFileSenderService("http://localhost:18194/api/v1.0/pub/inventario/device-info");
                     bool envioBemSucedido = false; // Controle de estado
 
                     try

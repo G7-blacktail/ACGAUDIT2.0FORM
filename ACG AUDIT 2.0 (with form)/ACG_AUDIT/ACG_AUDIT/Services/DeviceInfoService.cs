@@ -26,16 +26,26 @@ namespace ACG_AUDIT.Services
                     deviceInfo.SerialNumber = share["SerialNumber"]?.ToString() ?? string.Empty;
                 }
 
-                // Ler o arquivo TXT para obter o hash
+                // Caminho para o arquivo de etiqueta
                 string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files");
                 string filePath = Path.Combine(appDataPath, "etiqueta.txt");
+
+                // Verificar se o arquivo de etiqueta existe
+                if (!File.Exists(filePath))
+                {
+                    // Se o arquivo não existir, gerar o hash e salvar
+                    UuidAcgService uuidService = new UuidAcgService();
+                    uuidService.GetPropUuidAcg();
+                }
+
+                // Ler o arquivo TXT para obter o hash
                 if (File.Exists(filePath))
                 {
                     string[] lines = File.ReadAllLines(filePath);
-                    if (lines.Length >= 2)
+                    if (lines.Length >= 1)
                     {
                         // A segunda linha contém o hash
-                        deviceInfo.UUIDACG = lines[1]; // Adiciona o hash ao objeto DeviceInfo
+                        deviceInfo.UUIDACG = lines[0]; // Adiciona o hash ao objeto DeviceInfo
                     }
                 }
                 else
