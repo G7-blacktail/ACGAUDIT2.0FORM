@@ -10,14 +10,14 @@ public class Program
     private string jsonFilePath => Path.Combine(configFolderPath, "config.json");
     private static string logFilePath => Path.Combine(configFolderPath, "log.txt");
     private static string configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config");
-    private static string userDocsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+    private static string proprietiesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties");
     private DateTime ultimaExecucao;
     private DateTime proximaExecucao;
     private DateTime comparacao = DateTime.MinValue;
     private DateTime startTime;
     private readonly TimeSpan maxRuntime = TimeSpan.FromSeconds(5);
 
-    private string ACG_HOME;
+    private readonly string ACG_HOME;
 
     [DllImport("kernel32.dll")]
     static extern IntPtr GetConsoleWindow();
@@ -29,14 +29,23 @@ public class Program
 
     public Program()
     {
-        ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg_form", "ACG_AUDIT.exe");
-        //ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\ACG AUDIT 2.0 (with form)\ACG_AUDIT\ACG_AUDIT\bin\Release\net8.0-windows\publish\ACG_AUDIT.exe";
+        ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\2.0.1\Acg Audit 2.0.1\bin\Release\Acg Audit 2.0.1.exe";
     }
-        public void Iniciar()
+
+    public void Iniciar()
     {
+
+        CarregarDados();
+
+        // Verificar se a data atual é maior ou igual à próxima execução e se o arquivo config.json não existe
+        if (DateTime.Now >= proximaExecucao || !File.Exists(jsonFilePath))
+        {
+            ExecutarAcao(); // Executa o ACG AUDIT
+        }
+
         CriarPastaConfig();
         CriarArquivos();
-        CarregarDados();
+
 
         startTime = DateTime.Now;
 
@@ -62,7 +71,6 @@ public class Program
             if (stopwatch.Elapsed.TotalSeconds > 30)
                 break;
 
-            ExecutarAcao();
             ultimaExecucao = DateTime.Now;
             proximaExecucao = CalcularProximaExecucao();
             SalvarDados();
@@ -75,9 +83,9 @@ public class Program
         if (File.Exists(jsonFilePath))
         {
             string json = File.ReadAllText(jsonFilePath);
-            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json)  ?? new ExpandoObject();
+            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json) ?? new ExpandoObject();
 
-            if(data != null)
+            if (data != null)
             {
                 ultimaExecucao = data.UltimaExecucao;
                 proximaExecucao = data.ProximaExecucao;
@@ -87,7 +95,7 @@ public class Program
         else
         {
             ultimaExecucao = DateTime.MinValue;
-            proximaExecucao = DateTime.Now; 
+            proximaExecucao = DateTime.Now;
         }
     }
 
@@ -120,16 +128,13 @@ public class Program
 
     private void CriarPastaConfig()
     {
-        string proprietiesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties");
-        string acgConfigFolderPath = Path.Combine(proprietiesFolderPath, ".acg_config");
-
         if (!Directory.Exists(proprietiesFolderPath))
         {
             Directory.CreateDirectory(proprietiesFolderPath);
             new DirectoryInfo(proprietiesFolderPath).Attributes |= FileAttributes.Hidden;
-            if (!Directory.Exists(acgConfigFolderPath))
+            if (!Directory.Exists(configFolderPath))
             {
-                Directory.CreateDirectory(acgConfigFolderPath);
+                Directory.CreateDirectory(configFolderPath);
             }
         }
     }
@@ -141,6 +146,7 @@ public class Program
 
         if (!File.Exists(path1))
         {
+            CalcularProximaExecucao();
             var jsonData = new { UltimaExecucao = DateTime.Now, ProximaExecucao = proximaExecucao };
             string jsonContents = JsonConvert.SerializeObject(jsonData);
             File.WriteAllText(path1, jsonContents);
@@ -149,13 +155,12 @@ public class Program
         if (!File.Exists(path2))
         {
             File.WriteAllText(path2, "");
+            EscreverLog();
         }
-
     }
 
-        public static void Main()
+    public static void Main()
     {
-
         IntPtr handle = GetConsoleWindow();
         ShowWindow(handle, SW_HIDE);
         Program programa = new Program();

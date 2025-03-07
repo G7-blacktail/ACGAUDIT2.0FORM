@@ -7,6 +7,8 @@ using ACG_AUDIT.ClassCollections;
 using ACG_AUDIT.Services;
 using System.Text.Json;
 using System.ComponentModel;
+using System.Security.Principal;
+using ACG_AUDIT_2._0.Services.RegCollector;
 
 namespace ACG_AUDIT
 {
@@ -27,13 +29,10 @@ namespace ACG_AUDIT
         private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
         private static readonly string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
         private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "acg audit files");
-        private static readonly string executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "acg", "ACG AUDIT 2.0.exe");
         private static readonly string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "lib", "Subsystem", "Agendador.exe");
         private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
         private static readonly string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
-        private static readonly string systemLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "acg audit files", "audit_info.json");
         private static readonly int timeDelay = 2000;
-        private static readonly string stringPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ACG", "invent.json");
 
         [STAThread]
         static void Main()
@@ -127,9 +126,6 @@ namespace ACG_AUDIT
                     RemoteAccess remoteAccessInfo = RemoteAccessService.GetRemoteAccessInfo();
                     await UpdateStatusWithDelay("Informações de acesso remoto coletadas", timeDelay, loadingForm);
 
-                    TimeInfo timeInfo = TimeService.GetTimeInfo();
-                    await UpdateStatusWithDelay("Informações de data e hora coletadas", timeDelay, loadingForm);
-
                     // Coletar informações de proteçõo de tela
                     string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "GroupPolicy", "User", "Registry.pol"); // Caminho relativo ao dispositivo consultado
                     //string filePath = @"C:\Windows\System32\GroupPolicy\User\Registry.pol"; // caminho absoluto na minha maquina
@@ -149,7 +145,6 @@ namespace ACG_AUDIT
                         FirewallProfilesList = firewallProfileList,
                         AntivirusProductsList = antivirusProductList,
                         RemoteAccessInfo = remoteAccessInfo,
-                        TimeInfo = timeInfo,
                         ScreenSaverSettings = screenSaverSettings
                     };
 
@@ -157,72 +152,11 @@ namespace ACG_AUDIT
                     await JsonCreator.CreateInitialInventoryJson(collectedData, finalJsonPath, null);
                     // Definir o caminho para salvar o JSON na pasta AppData do usuário
 
-                    // Solicitar ao usuário se deseja continuar
-                    //loadingForm.Invoke((MethodInvoker)async delegate
-                    //{
-                    //    DialogResult result = ShowConfirmationDialog();
-                    //    if (result == DialogResult.Yes)
-                    //    {
-
-                    //        if (File.Exists(executablePath))
-                    //        {
-                    //            await UpdateStatusWithDelay("Abrindo o coletor avançado...", timeDelay *3, loadingForm);
-
-                    //            ProcessStartInfo startInfo = new ProcessStartInfo
-                    //            {
-                    //                FileName = executablePath,
-                    //                UseShellExecute = true,
-                    //                Verb = "runas" // Executar como administrador
-                    //            };
-
-                    //            await UpdateStatusWithDelay("Executando...", timeDelay, loadingForm);
-
-                    //            try
-                    //            {
-                    //                Process process = Process.Start(startInfo);
-                    //                if (process != null)
-                    //                {
-                    //                    process.WaitForExit();
-                    //                    await UpdateStatusWithDelay("Coletor avançado finalizado.", timeDelay, loadingForm);
-
-                    //                    if (File.Exists(systemLogPath))
-                    //                    {
-                    //                        // Criar o Inventario.json com os dados da primeira e segunda etapas
-                    //                        await JsonCreator.UpdateInventoryWithLogInfo(collectedData, finalJsonPath, systemLogPath);
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        // Criar o Inventario.json apenas com os dados da primeira etapa
-                    //                        await JsonCreator.CreateInitialInventoryJson(collectedData, finalJsonPath, null);
-                    //                    }
-                    //                }
-                    //            }
-                    //            catch (Win32Exception ex)
-                    //            {
-                    //                // Tratar a exceção se o processo não puder ser iniciado
-                    //                string mensagemErro = ex.Message.Contains("A operação foi cancelada pelo usuário")
-                    //                    ? "A operação foi cancelada pelo usuário."
-                    //                    : $"Erro ao iniciar o coletor: {ex.Message}";
-
-                    //                await UpdateStatusWithDelay(mensagemErro, timeDelay, loadingForm);
-                    //            }
-                    //            catch (Exception ex)
-                    //            {
-                    //                // Tratar outras exceções
-                    //                await UpdateStatusWithDelay($"Ocorreu um erro inesperado: {ex.Message}", timeDelay, loadingForm);
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            await UpdateStatusWithDelay("O executável não foi encontrado.", timeDelay, loadingForm);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        ShowWarningDialog();
-                    //        await UpdateStatusWithDelay("Operação cancelada pelo usuário.", timeDelay, loadingForm);
-                    //    }
-                    //});
+                    //Solicitar ao usuário se deseja continuar
+                    loadingForm.Invoke((MethodInvoker)async delegate
+                    {
+                        await CollectAndMergeData(loadingForm, finalJsonPath);
+                    });
 
                     await Task.Delay(timeDelay * 10);
 
@@ -240,21 +174,21 @@ namespace ACG_AUDIT
 
                         await UpdateStatusWithDelay("Envio executado com sucesso.", timeDelay, loadingForm);
 
-                        try
-                        {
-                            if (string.IsNullOrEmpty(configContent))
-                            {
-                                MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                File.WriteAllText(configFilePath, configContent);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Erro ao reescrever o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        //try
+                        //{
+                        //    if (string.IsNullOrEmpty(configContent))
+                        //    {
+                        //        MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //    }
+                        //    else
+                        //    {
+                        //        File.WriteAllText(configFilePath, configContent);
+                        //    }
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    MessageBox.Show($"Erro ao reescrever o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //}
                     }
                     catch (Exception ex)
                     {
@@ -298,22 +232,87 @@ namespace ACG_AUDIT
 
         private static void CreateLogDirectories()
         {
-            //if (!Directory.Exists(logsDirectory))
-            //{
-            //    Directory.CreateDirectory(logsDirectory);
-            //}
-            //if (!Directory.Exists(logsSubDirectory))
-            //{
-            //    Directory.CreateDirectory(logsSubDirectory);
-            //}
-            //if (!Directory.Exists(appdata))
-            //{
-            //    Directory.CreateDirectory(appdata);
-            //}
-            //if (!Directory.Exists(logsSubDirectoryAppData))
-            //{
-            //    Directory.CreateDirectory(logsSubDirectoryAppData);
-            //}
+            if (!Directory.Exists(logsDirectory))
+            {
+                Directory.CreateDirectory(logsDirectory);
+            }
+            if (!Directory.Exists(logsSubDirectory))
+            {
+                Directory.CreateDirectory(logsSubDirectory);
+            }
+            if (!Directory.Exists(appdata))
+            {
+                Directory.CreateDirectory(appdata);
+            }
+            if (!Directory.Exists(logsSubDirectoryAppData))
+            {
+                Directory.CreateDirectory(logsSubDirectoryAppData);
+            }
+        }
+
+        private static async Task CollectAndMergeData(TelaInicial loadingForm, string finalJsonPath)
+        {
+            // Verificar se o programa está sendo executado com privilégios elevados
+            bool isElevated = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+
+            if (isElevated)
+            {
+                await UpdateStatusWithDelay("Coletando informações adicionais...", timeDelay * 3, loadingForm);
+
+                // Coletar informações do BitLocker
+                var bitLockerInfo = BitLockerInfo.CheckBitLockerStatusForAllDisks();
+
+                // Coletar informações de políticas de auditoria
+                var auditPolicyInfo = new AuditPolicyInfo("audit_policies.inf");
+
+                // Coletar informações do servidor NTP
+                string ntpServer = TimeInfo.GetTargetNtpServer();
+
+                // Ler o conteúdo existente do Inventario.json
+                var existingData = new
+                {
+                    BitLocker = bitLockerInfo,
+                    AuditPolicy = auditPolicyInfo.PolicyValues,
+                    NtpServer = ntpServer
+                };
+
+                // Verificar se o arquivo já existe
+                if (File.Exists(finalJsonPath))
+                {
+                    // Ler o conteúdo existente
+                    string existingJson = await File.ReadAllTextAsync(finalJsonPath);
+                    var existingInventory = JsonSerializer.Deserialize<Dictionary<string, object>>(existingJson);
+
+                    // Mesclar as novas informações
+                    existingInventory["BitLocker"] = existingData.BitLocker;
+                    existingInventory["AuditPolicy"] = existingData.AuditPolicy;
+                    existingInventory["NtpServer"] = existingData.NtpServer;
+
+                    // Serializar novamente e salvar
+                    string mergedJson = JsonSerializer.Serialize(existingInventory, new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
+                    });
+                    await File.WriteAllTextAsync(finalJsonPath, mergedJson);
+                }
+                else
+                {
+                    // Se o arquivo não existir, criar um novo
+                    string newJson = JsonSerializer.Serialize(existingData, new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping // Permite caracteres acentuados
+                    });
+                    await File.WriteAllTextAsync(finalJsonPath, newJson);
+                }
+
+                await UpdateStatusWithDelay("Coleta de informações adicionais finalizada.", timeDelay, loadingForm);
+            }
+            else
+            {
+                await UpdateStatusWithDelay("Executando sem privilégios elevados.", timeDelay, loadingForm);
+            }
         }
 
         private static async Task UpdateStatusWithDelay(string message, int delay, TelaInicial loadingForm)
@@ -325,22 +324,5 @@ namespace ACG_AUDIT
             await Task.Delay(delay);
         }
 
-        private static DialogResult ShowConfirmationDialog()
-        {
-            return MessageBox.Show(
-                "Deseja continuar e executar o coletor avançado? Algumas informações críticas só serão coletadas com esta etapa.",
-                "Coletor Avançado",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-        }
-
-        private static void ShowWarningDialog()
-        {
-            MessageBox.Show(
-                "Ao não realizar a coleta completa algumas informações do comodato importantes não estarão no relatório do inventário. Caso não seja administrador do sistema, entre em contato com ele ou conosco para coletar as informações completas e evitar bloqueio no sistema.",
-                "Aviso Importante",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
-        }
     }
 }
