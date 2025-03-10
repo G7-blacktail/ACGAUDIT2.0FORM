@@ -29,7 +29,7 @@ namespace ACG_AUDIT
         private static readonly string logsSubDirectoryAppData = Path.Combine(appdata, "acg audit files");
         private static readonly string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
         private static readonly string logsSubDirectory = Path.Combine(logsDirectory, "acg audit files");
-        private static readonly string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "ACG", "lib", "Subsystem", "Agendador.exe");
+        private static readonly string agendadorPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Acg Audit", "lib", "Subsystem", "Agendador.exe");
         private static readonly string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ".proprieties", ".acg_config", "config.json");
         private static readonly string finalJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ACG Audit", "Inventario.json");
         private static readonly int timeDelay = 2000;
@@ -50,40 +50,40 @@ namespace ACG_AUDIT
             // Variável para armazenar o conteúdo do config.json
             string configContent = string.Empty;
 
-            //// Ler o arquivo de configuração
-            //if (File.Exists(configFilePath))
-            //{
-            //    try
-            //    {
-            //        // Ler o conteúdo do arquivo
-            //        configContent = File.ReadAllText(configFilePath);
+            // Ler o arquivo de configuração
+            if (File.Exists(configFilePath))
+            {
+                try
+                {
+                    // Ler o conteúdo do arquivo
+                    configContent = File.ReadAllText(configFilePath);
 
-            //        // Excluir o arquivo após ler o conteúdo
-            //        File.Delete(configFilePath);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show($"Erro ao ler ou excluir o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //        loadingForm.Invoke((MethodInvoker)delegate
-            //        {
-            //            loadingForm.Close();
-            //        });
-            //        return;
-            //    }
-            //}
-            //else
-            //{
-            //    loadingForm.Invoke((MethodInvoker)delegate
-            //    {
-            //        if (!File.Exists(agendadorPath))
-            //        {
-            //            MessageBox.Show($"Erro ao tentar abrir o agendador", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //            loadingForm.Close();
-            //        }
-            //        Process.Start(agendadorPath);
-            //    });
-            //    return;
-            //}
+                    // Excluir o arquivo após ler o conteúdo
+                    File.Delete(configFilePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao ler ou excluir o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    loadingForm.Invoke((MethodInvoker)delegate
+                    {
+                        loadingForm.Close();
+                    });
+                    return;
+                }
+            }
+            else
+            {
+                loadingForm.Invoke((MethodInvoker)delegate
+                {
+                    if (!File.Exists(agendadorPath))
+                    {
+                        MessageBox.Show($"Erro ao tentar abrir o agendador", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        loadingForm.Close();
+                    }
+                    Process.Start(agendadorPath);
+                });
+                return;
+            }
 
             // START //
 
@@ -174,21 +174,21 @@ namespace ACG_AUDIT
 
                         await UpdateStatusWithDelay("Envio executado com sucesso.", timeDelay, loadingForm);
 
-                        //try
-                        //{
-                        //    if (string.IsNullOrEmpty(configContent))
-                        //    {
-                        //        MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        //    }
-                        //    else
-                        //    {
-                        //        File.WriteAllText(configFilePath, configContent);
-                        //    }
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    MessageBox.Show($"Erro ao reescrever o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //}
+                        try
+                        {
+                            if (string.IsNullOrEmpty(configContent))
+                            {
+                                MessageBox.Show("O conteúdo do arquivo de configuração estava vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else
+                            {
+                                File.WriteAllText(configFilePath, configContent);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Erro ao reescrever o arquivo de configuração: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                     catch (Exception ex)
                     {

@@ -15,7 +15,7 @@ public class Program
     private DateTime proximaExecucao;
     private DateTime comparacao = DateTime.MinValue;
     private DateTime startTime;
-    private readonly TimeSpan maxRuntime = TimeSpan.FromSeconds(5);
+    private readonly TimeSpan maxRuntime = TimeSpan.FromSeconds(20);
 
     private readonly string ACG_HOME;
 
@@ -29,47 +29,45 @@ public class Program
 
     public Program()
     {
-        ACG_HOME = @"C:\Users\gustavo.fernandes\Documents\Lidersis\Modelos\2.0.1\Acg Audit 2.0.1\bin\Release\Acg Audit 2.0.1.exe";
+        ACG_HOME = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Acg Audit", "Acg Audit 2.0.1.exe");
+        // ACG_HOME = @"C:\Users\Gusta\Documents\Lidersis\ACGAUDIT2.0FORM\2.0.1\Acg Audit 2.0.1\bin\Release\net8.0-windows\win-x64\Acg Audit 2.0.1.exe";
     }
 
     public void Iniciar()
     {
 
         CarregarDados();
+        startTime = DateTime.Now;
 
         // Verificar se a data atual é maior ou igual à próxima execução e se o arquivo config.json não existe
         if (DateTime.Now >= proximaExecucao || !File.Exists(jsonFilePath))
         {
             ExecutarAcao(); // Executa o ACG AUDIT
-        }
+        } 
+            CriarPastaConfig();
+            CriarArquivos();
 
-        CriarPastaConfig();
-        CriarArquivos();
-
-
-        startTime = DateTime.Now;
 
         while (DateTime.Now - startTime < maxRuntime)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            DateTime now;
-            do
+            
+            while (DateTime.Now <= proximaExecucao) 
             {
-                now = DateTime.Now;
-                System.Threading.Thread.Sleep(100); // Aguarda 100 milissegundos para não consumir muitos recursos.
-
-                if (DateTime.Now - startTime > maxRuntime)
-                    break;
-
-            } while (!(now >= proximaExecucao));
+                System.Threading.Thread.Sleep(100); // Evita alto consumo de CPU
+                
+                if (DateTime.Now - startTime >= maxRuntime) // Se passou do tempo máximo, encerra o loop
+                {
+                    return;
+                }
+            }
 
             stopwatch.Stop();
 
-            if (DateTime.Now - startTime > maxRuntime)
-                break;
-
-            if (stopwatch.Elapsed.TotalSeconds > 30)
-                break;
+            if (stopwatch.Elapsed.TotalSeconds > 30) // Se demorou mais de 30s, interrompe
+            {
+                return;
+            }
 
             ultimaExecucao = DateTime.Now;
             proximaExecucao = CalcularProximaExecucao();
