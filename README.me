@@ -1,1 +1,18 @@
 # ACG AUDIT 2.0 Projeto
+
+Este projeto está separado em diversas pastas:
+
+-> A versão final está na 2.0.1 pois ela contém a execução como administrador embutida no código
+
+## Acg Audit - Programa de auditória
+
+Este software foi desenvolvido para coleta e envio de informações, ele faz a coleta e envia para o software web de destino.
+Ele contém um segundo Software para o agendamento para sanar o problema de agendar o envio que segue a seguinte regra:
+    Executa a aplicação todo dia 1 do mês
+    Caso o computador não for logado por nenhum usuário executa no próximo dia
+    Caso fechado ou algo impessa seu envio ele executará no próximo dia também
+
+Desta forma o Agendador é responsável por definir quando o Acg Audit será executado de forma que atenda a necessidade da empresa.
+
+Esta versão da aplicação foi construída usando visual studio na sua versão 22, .NET 8 para aplicação principal, WindowsForms, Inno Setup para 
+criação do instalador.

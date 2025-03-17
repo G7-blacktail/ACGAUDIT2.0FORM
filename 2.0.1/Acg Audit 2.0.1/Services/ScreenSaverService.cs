@@ -12,8 +12,7 @@ namespace ACG_AUDIT.Services
 
             if (!File.Exists(filePath))
             {
-                string[] policyDataFail = [];
-                return ExtractDesiredValues(policyDataFail); ;
+                return new ScreenSaverSettings(false, false, "Não configurado", "Não configurado");
             }
             // Ler o arquivo Registry.pol
             string policyData = File.ReadAllText(filePath, Encoding.Unicode);
